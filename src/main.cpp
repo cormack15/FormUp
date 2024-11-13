@@ -54,7 +54,7 @@ void Update(sf::RenderWindow& window)
 
 int main() {
 	//Window
-	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "SPACE INVADERS");
+	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "FORM UP");
 	window.setFramerateLimit(60);
 	//Load
 	Load();

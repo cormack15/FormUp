@@ -4,8 +4,6 @@ using namespace std;
 
 void Player::Update(double dt)
 {
-	//Define the movement speed for the player
-	const float playerSpeed = 400;
 
 	//Move in four directions based on keys
 	Vector2f movement(0.0f, 0.0f);
@@ -13,22 +11,22 @@ void Player::Update(double dt)
 	// Move Up
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		movement.y -= playerSpeed * dt;
+		movement.y -= _speed * dt;
 	}
 	//Move Down
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		movement.y += playerSpeed * dt;
+		movement.y += _speed * dt;
 	}
 	//Move Left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		movement.x -= playerSpeed * dt;
+		movement.x -= _speed * dt;
 	}
 	//Move Right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		movement.x += playerSpeed * dt;
+		movement.x += _speed * dt;
 	}
 
 	move(movement);
