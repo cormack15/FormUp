@@ -1,21 +1,26 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "player.h"
 
 //VARIABLES
 //Game width
-const int gameWidth = 800;
+const int gameWidth = 506;
 //Game height
-const int gameHeight = 600;
+const int gameHeight = 900;
+
+//Unique pointer for the player
+std::unique_ptr<Player> player;
 
 void Load()
 {
-
+	player = std::make_unique<Player>();
+	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 
 }
 
 void Render(sf::RenderWindow& window)
 {
-
+	player->Render(window);
 	
 }
 
@@ -41,6 +46,8 @@ void Update(sf::RenderWindow& window)
 		}
 	}
 
+	player->Update(dt);
+
 }
 
 
@@ -56,7 +63,7 @@ int main() {
 	while (window.isOpen()) {
 
 		// Clear the window
-		window.clear();
+		window.clear(sf::Color::White);
 
 		// Update
 		Update(window);
