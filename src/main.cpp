@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "player.h"
+#include "entity.h"
+#include "shape.h"
 
 //VARIABLES
 //Game width
@@ -11,11 +13,25 @@ const int gameHeight = 900;
 //Unique pointer for the player
 std::unique_ptr<Player> player;
 
+//Defining textures
+sf::Texture spritesheet;
+sf::Sprite shapeCircle;
+
 void Load()
 {
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
+	
+	//Error handling for loading texture
+	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
+		std::cerr << "Failed to load spritesheet" << std::endl;
+	}
 
+	//Loading test texture into sprite
+	shapeCircle.setTexture(spritesheet);
+	shapeCircle.setTextureRect(sf::IntRect(0, 0, 50, 50));
+
+	Target* shape = new Target(sf::IntRect(0, 0, 50, 50), {100,100});
 }
 
 void Render(sf::RenderWindow& window)
@@ -49,8 +65,6 @@ void Update(sf::RenderWindow& window)
 	player->Update(dt);
 
 }
-
-
 
 int main() {
 	//Window
