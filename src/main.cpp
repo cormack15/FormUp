@@ -1,21 +1,24 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdio.h>
 #include "player.h"
 #include "entity.h"
 #include "shape.h"
+#include "game.h"
+
+using namespace sf;
+using namespace std;
 
 //VARIABLES
-//Game width
-const int gameWidth = 506;
-//Game height
-const int gameHeight = 900;
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;
 
 //Defining textures
 sf::Texture spritesheet;
-sf::Sprite shapeCircle;
+sf::Sprite playerSprite;
+
+CircleShape ball;
 
 void Load()
 {
@@ -26,12 +29,6 @@ void Load()
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
 	}
-
-	//Loading test texture into sprite
-	shapeCircle.setTexture(spritesheet);
-	shapeCircle.setTextureRect(sf::IntRect(0, 0, 50, 50));
-
-	Target* shape = new Target(sf::IntRect(0, 0, 50, 50), {100,100});
 }
 
 void Render(sf::RenderWindow& window)
