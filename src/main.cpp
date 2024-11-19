@@ -1,12 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "player.h"
+#include "game.h"
 
-//VARIABLES
-//Game width
-const int gameWidth = 506;
-//Game height
-const int gameHeight = 900;
+//VARIABLES 
+
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;

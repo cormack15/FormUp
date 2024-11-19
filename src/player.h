@@ -1,5 +1,6 @@
 #pragma once
 #include "entity.h"
+#include "game.h"
 
 class Player : public Entity
 {

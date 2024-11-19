@@ -29,8 +29,19 @@ void Player::Update(double dt)
 		movement.x += _speed * dt;
 	}
 
-	move(movement);
+	//Cakculate the potential new position
+	sf::Vector2f newPosition = _position + movement;
 
+	// Get the player's radius
+	float radius = static_cast<sf::CircleShape*>(_shape.get())->getRadius();
+
+	//Check for boundaries
+
+
+	// Update the position
+	move(newPosition);
+	
+	// Sync position with the shape
 	Entity::Update(dt);
 }
 
