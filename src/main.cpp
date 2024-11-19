@@ -6,8 +6,8 @@
 #include "shape.h"
 #include "game.h"
 
-using namespace sf;
 using namespace std;
+using namespace sf;
 
 //VARIABLES
 
@@ -16,7 +16,7 @@ std::unique_ptr<Player> player;
 
 //Defining textures
 sf::Texture spritesheet;
-sf::Sprite playerSprite;
+sf::Sprite targetSprite;
 
 CircleShape ball;
 
@@ -29,11 +29,16 @@ void Load()
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
 	}
+
+	//Load in sprite for a target
+	targetSprite.setTexture(spritesheet);
+	targetSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(50, 50)));
 }
 
 void Render(sf::RenderWindow& window)
 {
 	player->Render(window);
+	window.draw(targetSprite);
 	
 }
 

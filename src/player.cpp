@@ -1,6 +1,7 @@
 #include "player.h"
-using namespace sf;
+
 using namespace std;
+using namespace sf;
 
 void Player::Update(double dt)
 {

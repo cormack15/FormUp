@@ -2,8 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-class Entity
-{
+class Entity {
 protected:
 	std::unique_ptr<sf::Shape> _shape;
 	sf::Vector2f _position;
