@@ -14,6 +14,9 @@ using namespace sf;
 //Unique pointer for the player
 std::unique_ptr<Player> player;
 
+//Pointer for targets
+std::vector<Target*> targets;
+
 //Defining textures
 sf::Texture spritesheet;
 sf::Sprite targetSprite;
@@ -33,13 +36,21 @@ void Load()
 	//Load in sprite for a target
 	targetSprite.setTexture(spritesheet);
 	targetSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(50, 50)));
+
+	//Create a target
+	Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
+	targets.push_back(tar);
+
 }
 
 void Render(sf::RenderWindow& window)
 {
 	player->Render(window);
 	window.draw(targetSprite);
-	
+
+	for (const auto t : targets) {
+		window.draw(*t);
+	}
 }
 
 void Update(sf::RenderWindow& window)
@@ -64,6 +75,12 @@ void Update(sf::RenderWindow& window)
 		}
 	}
 
+	//Update targets
+	for (auto& s : targets) {
+		s->Update(dt);
+	};
+
+	//Update player
 	player->Update(dt);
 
 }

@@ -10,3 +10,10 @@ public:
 	virtual ~Shape() = 0;
 	virtual void Update(const float &dt);
 };
+
+class Target : public Shape {
+public:
+	Target(sf::IntRect ir, sf::Vector2f pos);
+	Target();
+	void Update(const float &dt);
+};
