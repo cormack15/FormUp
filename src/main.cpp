@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
+#include <ctime>
 #include "player.h"
 #include "entity.h"
 #include "shape.h"
@@ -10,6 +11,7 @@ using namespace std;
 using namespace sf;
 
 //VARIABLES
+int randXSpawnPoint;
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;
@@ -25,6 +27,8 @@ CircleShape ball;
 
 void Load()
 {
+	srand(time(0));
+	
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 	
@@ -37,25 +41,28 @@ void Load()
 	targetSprite.setTexture(spritesheet);
 	targetSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(50, 50)));
 
-	//Create a target
-	Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
-	targets.push_back(tar);
+	//OLD, KEPT FOR A REMINDER: Create a target
+	//Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
+	//targets.push_back(tar);
 
 	//Programatically spawn targets
 	for (int i = 0; i < 5; i++) {
+		randXSpawnPoint = (rand() % 450) + 50;
+
 		auto rect = IntRect(i * 50, i * 50, 50, 50);
 
-		Vector2f position = Vector2f(i * 50, i * 50);
+		Vector2f position = Vector2f(randXSpawnPoint, 0);
 
 		auto placedTarget = new Target(rect, position);
 		targets.push_back(placedTarget);
 	}
+
+
 }
 
 void Render(sf::RenderWindow& window)
 {
 	player->Render(window);
-	window.draw(targetSprite);
 
 	for (const auto t : targets) {
 		window.draw(*t);

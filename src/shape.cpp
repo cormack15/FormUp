@@ -21,18 +21,19 @@ Target::Target(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
 	setPosition(pos);
 }
 
+//Defining target's direction and speed
+bool Target::direction = true;
+float Target::speed = 100;
+
 //Target update
 void Target::Update(const float& dt) {
 	Shape::Update(dt);
 
 	//Target movement
-	move(sf::Vector2f(dt * (direction ? 1.0f : -1.0f) * speed, 0.0f));
+	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
 
-	if ((direction && getPosition().x > gameWidth - 16) || (!direction && getPosition().x < 16)) {
+	if ((direction && getPosition().y > gameHeight) || (!direction && getPosition().y < 0)) {
 		direction = !direction;
+		move(sf::Vector2f(0.f, 10.f));
 	}
 }
-
-//Defining target's direction and speed
-bool Target::direction;
-float Target::speed;
