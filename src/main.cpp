@@ -27,9 +27,7 @@ sf::Sprite targetSprite;
 CircleShape ball;
 
 void Load()
-{
-	srand(time(0));
-	
+{	
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 	
@@ -45,9 +43,33 @@ void Load()
 	//OLD, KEPT FOR A REMINDER: Create a target
 	//Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
 	//targets.push_back(tar);
+}
+
+void SpawnTargets() {
+	srand(time(0));
+
+	static sf::Clock clock;
+
+	cout << clock.getElapsedTime().asSeconds();
+
+	if (clock.getElapsedTime().asSeconds() > 1) {
+		//Spawn targets at intervals of time
+		for (int i = 0; i < 1; i++) {
+			randXSpawnPoint = (rand() % 401) + 50;
+
+			auto rect = IntRect(i * 50, 0, 50, 50);
+
+			Vector2f position = Vector2f(randXSpawnPoint, 0);
+
+			auto placedTarget = new Target(rect, position);
+			targets.push_back(placedTarget);
+		}
+
+		clock.restart();
+	}
 
 	//Programatically spawn targets
-	for (int i = 0; i < 5; i++) {
+	/*for (int i = 0; i < 5; i++) {
 		randXSpawnPoint = (rand() % 450) + 50;
 
 		auto rect = IntRect(i * 50, i * 50, 50, 50);
@@ -56,19 +78,7 @@ void Load()
 
 		auto placedTarget = new Target(rect, position);
 		targets.push_back(placedTarget);
-	}
-
-	//Spawn targets at intervals of time
-	for (int i = 0; i < 5; i++) {
-		randXSpawnPoint = (rand() % 401) + 50;
-
-		auto rect = IntRect(i * 50, 0, 50, 50);
-
-		Vector2f position = Vector2f(randXSpawnPoint, 0);
-
-		auto placedTarget = new Target(rect, position);
-		targets.push_back(placedTarget);
-	}
+	}*/
 }
 
 void Render(sf::RenderWindow& window)
@@ -124,6 +134,8 @@ int main() {
 
 		// Clear the window
 		window.clear(sf::Color::White);
+
+		SpawnTargets();
 
 		// Update
 		Update(window);
