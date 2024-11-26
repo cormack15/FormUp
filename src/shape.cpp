@@ -13,7 +13,7 @@ Shape::Shape(sf::IntRect ir) : Sprite() {
 void Shape::Update(const float& dt) {}
 Shape::~Shape() = default;
 
-//Defning target
+//Defining target
 Target::Target() : Shape() {};
 
 Target::Target(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {

@@ -41,6 +41,15 @@ void Load()
 	Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
 	targets.push_back(tar);
 
+	//Programatically spawn targets
+	for (int i = 0; i < 5; i++) {
+		auto rect = IntRect(i * 50, i * 50, 50, 50);
+
+		Vector2f position = Vector2f(i * 50, i * 50);
+
+		auto placedTarget = new Target(rect, position);
+		targets.push_back(placedTarget);
+	}
 }
 
 void Render(sf::RenderWindow& window)
