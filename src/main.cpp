@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
-#include <ctime>
+#include <chrono>
+#include <thread>
 #include "player.h"
 #include "entity.h"
 #include "shape.h"
@@ -57,7 +58,17 @@ void Load()
 		targets.push_back(placedTarget);
 	}
 
+	//Spawn targets at intervals of time
+	for (int i = 0; i < 5; i++) {
+		randXSpawnPoint = (rand() % 401) + 50;
 
+		auto rect = IntRect(i * 50, 0, 50, 50);
+
+		Vector2f position = Vector2f(randXSpawnPoint, 0);
+
+		auto placedTarget = new Target(rect, position);
+		targets.push_back(placedTarget);
+	}
 }
 
 void Render(sf::RenderWindow& window)
