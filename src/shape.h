@@ -16,6 +16,8 @@ public:
 	Target(sf::IntRect ir, sf::Vector2f pos);
 	static bool direction;
 	static float speed;
+	char idX;
+	char idY;
 	Target();
 	void Update(const float &dt);
 };

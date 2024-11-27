@@ -13,6 +13,9 @@ using namespace sf;
 
 //VARIABLES
 int randXSpawnPoint;
+int randSpawnTimeframe;
+int randTargetSpriteX;
+int randTargetSpriteY;
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;
@@ -45,37 +48,32 @@ void Load()
 	//targets.push_back(tar);
 }
 
-void SpawnTargets() {
+void SpawnTargets()
+{
 	//Define clock
 	static sf::Clock clock;
 
-	//Spawn targets at random locations every second
-	if (clock.getElapsedTime().asSeconds() > 1) {
-		for (int i = 0; i < 1; i++) {
-			randXSpawnPoint = (rand() % 401) + 50;
+	//Spawn targets at random locations at random intervals
+	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {
+		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
 
-			auto rect = IntRect(i * 50, 0, 50, 50);
+		auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);	//Define the sprite for the target
+		Vector2f position = Vector2f(randXSpawnPoint, 0);								//Define the X,Y position for the target to spawn at
 
-			Vector2f position = Vector2f(randXSpawnPoint, 0);
+		auto placedTarget = new Target(rect, position);									//Create the target
 
-			auto placedTarget = new Target(rect, position);
-			targets.push_back(placedTarget);
-		}
+		//Set the target's X and Y ids. This is done by taking the randTargetSprite X and Y and adding 49 to get the correct value in ASCII, which the then stored as a char
+		placedTarget->idX = randTargetSpriteX + 49;
+		placedTarget->idY = randTargetSpriteY + 49;
 
-		clock.restart();
+		targets.push_back(placedTarget);												//Push target stack
+
+		clock.restart();																//Restart the clock
+
+		randSpawnTimeframe = (rand() % 3) + 1;											//Choose a random time until next target spawns
+		randTargetSpriteX = (rand() % 5);												//Choose a random sprite X
+		randTargetSpriteY = (rand() % 4);												//Choose a random sprite Y
 	}
-
-	//Programatically spawn targets
-	/*for (int i = 0; i < 5; i++) {
-		randXSpawnPoint = (rand() % 450) + 50;
-
-		auto rect = IntRect(i * 50, i * 50, 50, 50);
-
-		Vector2f position = Vector2f(randXSpawnPoint, 0);
-
-		auto placedTarget = new Target(rect, position);
-		targets.push_back(placedTarget);
-	}*/
 }
 
 void Render(sf::RenderWindow& window)
@@ -91,7 +89,6 @@ void Render(sf::RenderWindow& window)
 
 void Update(sf::RenderWindow& window)
 {
-
 	//Reset clock, recalculate deltatime
 	static sf::Clock clock;
 	float dt = clock.restart().asSeconds();
@@ -135,18 +132,19 @@ int main() {
 	//Clear, Update, Render, and Display
 	while (window.isOpen()) {
 
-		// Clear the window
+		//Clear the window
 		window.clear(sf::Color::White);
 
+		//Spawn Target
 		SpawnTargets();
 
-		// Update
+		//Update
 		Update(window);
 
-		// Draw game elements
+		//Draw game elements
 		Render(window);
 
-		// Display the rendered frame
+		//Display the rendered frame
 		window.display();
 	}
 
