@@ -24,10 +24,10 @@ std::vector<Target*> targets;
 sf::Texture spritesheet;
 sf::Sprite targetSprite;
 
-CircleShape ball;
 
 void Load()
 {	
+	//Create player and place on the screen
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 	
@@ -46,14 +46,11 @@ void Load()
 }
 
 void SpawnTargets() {
-	srand(time(0));
-
+	//Define clock
 	static sf::Clock clock;
 
-	cout << clock.getElapsedTime().asSeconds();
-
+	//Spawn targets at random locations every second
 	if (clock.getElapsedTime().asSeconds() > 1) {
-		//Spawn targets at intervals of time
 		for (int i = 0; i < 1; i++) {
 			randXSpawnPoint = (rand() % 401) + 50;
 
@@ -83,8 +80,10 @@ void SpawnTargets() {
 
 void Render(sf::RenderWindow& window)
 {
+	//Render the player
 	player->Render(window);
 
+	//Render the targets
 	for (const auto t : targets) {
 		window.draw(*t);
 	}
@@ -123,9 +122,13 @@ void Update(sf::RenderWindow& window)
 }
 
 int main() {
-	//Window
+	//Create window & set frame rate
 	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "FORM UP");
 	window.setFramerateLimit(60);
+
+	//Seed random with time
+	srand(time(0));
+
 	//Load
 	Load();
 
