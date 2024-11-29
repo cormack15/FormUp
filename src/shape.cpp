@@ -33,11 +33,4 @@ void Target::Update(const float& dt) {
 	
 	//Target movement
 	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
-
-	/*
-	if ((direction && getPosition().y > gameHeight) || (!direction && getPosition().y < 0)) {
-		//direction = !direction;
-		//move(sf::Vector2f(0.f, -100.f));
-		std::cout << "reverse";
-	}*/
 }
