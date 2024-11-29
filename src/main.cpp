@@ -63,8 +63,8 @@ void SpawnTargets()
 		auto placedTarget = new Target(rect, position);									//Create the target
 
 		//Set the target's X and Y ids. This is done by taking the randTargetSprite X and Y and adding 49 to get the correct value in ASCII, which the then stored as a char
-		placedTarget->idX = randTargetSpriteX + 49;
-		placedTarget->idY = randTargetSpriteY + 49;
+		placedTarget->idColour = randTargetSpriteX + 49;
+		placedTarget->idShape = randTargetSpriteY + 49;
 
 		targets.push_back(placedTarget);												//Push target stack
 
