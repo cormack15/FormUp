@@ -19,5 +19,6 @@ public:
 	char idX;
 	char idY;
 	Target();
+	~Target() {};
 	void Update(const float &dt);
 };

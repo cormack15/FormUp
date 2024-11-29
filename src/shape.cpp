@@ -1,3 +1,5 @@
+#include <iostream>
+#include <stdio.h>
 #include "shape.h"
 #include "game.h"
 
@@ -28,12 +30,14 @@ float Target::speed = 100;
 //Target update
 void Target::Update(const float& dt) {
 	Shape::Update(dt);
-
+	
 	//Target movement
 	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
 
+	/*
 	if ((direction && getPosition().y > gameHeight) || (!direction && getPosition().y < 0)) {
-		direction = !direction;
-		move(sf::Vector2f(0.f, 10.f));
-	}
+		//direction = !direction;
+		//move(sf::Vector2f(0.f, -100.f));
+		std::cout << "reverse";
+	}*/
 }

@@ -111,6 +111,10 @@ void Update(sf::RenderWindow& window)
 	//Update targets
 	for (auto& s : targets) {
 		s->Update(dt);
+
+		if ((s->direction && s->getPosition().y > gameHeight) || (!s->direction && s->getPosition().y < 0)) {
+			targets.erase(targets.begin());
+		}
 	};
 
 	//Update player
@@ -125,7 +129,7 @@ int main() {
 
 	//Seed random with time
 	srand(time(0));
-
+	
 	//Load
 	Load();
 
@@ -147,6 +151,5 @@ int main() {
 		//Display the rendered frame
 		window.display();
 	}
-
 	return 0;
 }
