@@ -25,7 +25,9 @@ std::vector<Target*> targets;
 
 //Defining textures
 sf::Texture spritesheet;
+sf::Texture modifierSpritesheet;
 sf::Sprite targetSprite;
+sf::Sprite modifierSprite;
 
 
 void Load()
@@ -34,14 +36,21 @@ void Load()
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 	
-	//Error handling for loading texture
+	//Error handling for loading textures
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
+	}
+	if (!modifierSpritesheet.loadFromFile("res/modifierspritesheet.png")) {
+		std::cerr << "Failed to load modifier spritesheet" << std::endl;
 	}
 
 	//Load in sprite for a target
 	targetSprite.setTexture(spritesheet);
 	targetSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(50, 50)));
+
+	//Load in sprite for a modifier
+	modifierSprite.setTexture(modifierSpritesheet);
+	modifierSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(70, 70)));
 
 	//OLD, KEPT FOR A REMINDER: Create a target
 	//Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });

@@ -19,7 +19,7 @@ Shape::~Shape() = default;
 Target::Target() : Shape() {};
 
 Target::Target(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
-	setOrigin(sf::Vector2f(16.f, 16.f));;
+	setOrigin(sf::Vector2f(16.f, 16.f));
 	setPosition(pos);
 }
 
@@ -34,3 +34,24 @@ void Target::Update(const float& dt) {
 	//Target movement
 	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
 }
+
+
+//Defining modifier
+Modifier::Modifier() : Shape() {};
+
+Modifier::Modifier(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
+	setOrigin(sf::Vector2f(16.f, 16.f));
+	setPosition(pos);
+}
+
+//Defining modifier's direction and speed
+bool Modifier::direction = true;
+float Modifier::speed = 100;
+
+//Modifier update
+void Modifier::Update(const float& dt) {
+	Shape::Update(dt);
+
+	//Modifier movement
+	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
+ }

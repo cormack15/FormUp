@@ -22,3 +22,15 @@ public:
 	~Target() {};
 	void Update(const float &dt);
 };
+
+class Modifier : public Shape {
+public:
+	Modifier(sf::IntRect ir, sf::Vector2f pos);
+	static bool direction;
+	static float speed;
+	char idColour;
+	char idShape;
+	Modifier();
+	~Modifier() {};
+	void Update(const float &dt);
+};
