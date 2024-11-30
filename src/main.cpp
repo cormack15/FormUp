@@ -13,7 +13,7 @@ using namespace sf;
 
 //VARIABLES
 int randXSpawnPoint;
-int randSpawnTimeframe;
+int randSpawnTimeframe = 1;
 int randTargetSpriteX;	int randModifierSpriteX;		//Stores the random X coord for targets and modifiers
 int randTargetSpriteY;	int randModifierSpriteY;		//Stores the random Y coord for targets and modifiers
 int targetIDCounter;	int modifierIDCounter;			//Stores the ID counter for targets and modifiers
@@ -103,18 +103,8 @@ void IntelligentSpawning()
 	//Define clock
 	static sf::Clock clock;
 
-
-	////// THIS FUNCTION //////
-	//Create a random modifier
-	//Look at how many modifiers there currently are
-	//If there isn't enough, create another modifier until there are enough
-	//Look at how many targets there are
-	//If there isn't enough, create another target to match one of the modifiers until there are enough
-	//Loop
-
-
-	int modifierThreshold = 4;			//Determines how many modifiers there should be on screen at once
-	int targetThreshold = 3;			//Determines how many targets there should be on screen at once
+	int modifierThreshold = 5;			//Determines how many modifiers there should be on screen at once
+	int targetThreshold = 5;			//Determines how many targets there should be on screen at once
 
 	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {						//Check if it's time to spawn something
 		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
@@ -149,7 +139,8 @@ void IntelligentSpawning()
 			targetExists += 1;																	//Change how many targets there currently are
 		}
 
-		randSpawnTimeframe = (rand() % 3) + 1;											//Choose a random time until next target spawns
+		clock.restart();																		//Restart the clock
+		randSpawnTimeframe = (rand() % 3) + 1;													//Choose a random time until next target spawns
 	}
 
 
