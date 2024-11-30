@@ -8,7 +8,6 @@ Shape::Shape() {};
 
 Shape::Shape(sf::IntRect ir) : Sprite() {
 	_sprite = ir;
-	setTexture(spritesheet);
 	setTextureRect(_sprite);
 };
 
@@ -20,6 +19,7 @@ Target::Target() : Shape() {};
 
 Target::Target(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
 	setOrigin(sf::Vector2f(16.f, 16.f));
+	setTexture(spritesheet);
 	setPosition(pos);
 }
 
@@ -41,6 +41,7 @@ Modifier::Modifier() : Shape() {};
 
 Modifier::Modifier(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
 	setOrigin(sf::Vector2f(16.f, 16.f));
+	setTexture(modifierSpritesheet);
 	setPosition(pos);
 }
 

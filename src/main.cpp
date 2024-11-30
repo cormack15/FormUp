@@ -14,15 +14,19 @@ using namespace sf;
 //VARIABLES
 int randXSpawnPoint;
 int randSpawnTimeframe;
-int randTargetSpriteX;
-int randTargetSpriteY;
-int targetIDCounter;
+int randTargetSpriteX;	int randModifierSpriteX;		//Stores the random X coord for targets and modifiers
+int randTargetSpriteY;	int randModifierSpriteY;		//Stores the random Y coord for targets and modifiers
+int targetIDCounter;	int modifierIDCounter;			//Stores the ID counter for targets and modifiers
+int targetExists;				//Stores how many targets currently exist
+int modifierExists;				//Stores how many modifiers currently exist
+char spawnerFlag;				//Stores a flag to direct the spawner
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;
 
 //Pointer for targets
 std::vector<Target*> targets;
+std::vector<Modifier*> modifiers;
 
 //Defining textures
 sf::Texture spritesheet;
@@ -88,17 +92,85 @@ void SpawnTargets()
 		randSpawnTimeframe = (rand() % 3) + 1;											//Choose a random time until next target spawns
 		randTargetSpriteX = (rand() % 5);												//Choose a random sprite X
 		randTargetSpriteY = (rand() % 4);												//Choose a random sprite Y
+
+		targetExists += 1;																//Change how many targets there currently are
 	}
 }
 
-void Render(sf::RenderWindow& window)
+
+void IntelligentSpawning()
 {
+	//Define clock
+	static sf::Clock clock;
+
+
+	////// THIS FUNCTION //////
+	//Create a random modifier
+	//Look at how many modifiers there currently are
+	//If there isn't enough, create another modifier until there are enough
+	//Look at how many targets there are
+	//If there isn't enough, create another target to match one of the modifiers until there are enough
+	//Loop
+
+
+	int modifierThreshold = 4;			//Determines how many modifiers there should be on screen at once
+	int targetThreshold = 3;			//Determines how many targets there should be on screen at once
+
+	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {						//Check if it's time to spawn something
+		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
+		Vector2f position = Vector2f(randXSpawnPoint, 0);								//Define the X,Y position to spawn at
+
+		if (modifierExists < modifierThreshold) {										//Check if there aren't enough modifiers
+			auto rect = IntRect(randModifierSpriteX * 70, randModifierSpriteY * 70, 70, 70);	//Define the sprite for the modifier
+			auto placedModifier = new Modifier(rect, position);									//Create the modifier
+
+			placedModifier->idColour = randModifierSpriteX + 49;								//Set the modifier's X, Y, and num ids
+			placedModifier->idShape = randModifierSpriteY + 49;
+			modifierIDCounter += 1;																//Increment modifierIDCounter
+			placedModifier->idNum = modifierIDCounter;
+
+			modifiers.push_back(placedModifier);												//Push target stack
+			randModifierSpriteX = (rand() % 5);													//Choose a random sprite X
+			randModifierSpriteY = (rand() % 4);													//Choose a random sprite Y
+			modifierExists += 1;																//Change how many targets there currently are
+		}
+		else if (targetExists < targetThreshold) {										//Check if there aren't enough targets
+			auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);		//Define the sprite for the target
+			auto placedTarget = new Target(rect, position);										//Create the target
+
+			placedTarget->idColour = randTargetSpriteX + 49;									//Set the modifier's X, Y, and num ids
+			placedTarget->idShape = randTargetSpriteY + 49;
+			targetIDCounter += 1;																//Increment targetIDCounter
+			placedTarget->idNum = targetIDCounter;
+
+			targets.push_back(placedTarget);													//Push target stack
+			randTargetSpriteX = (rand() % 5);													//Choose a random sprite X
+			randTargetSpriteY = (rand() % 4);													//Choose a random sprite Y
+			targetExists += 1;																	//Change how many targets there currently are
+		}
+
+		randSpawnTimeframe = (rand() % 3) + 1;											//Choose a random time until next target spawns
+	}
+
+
+}
+
+
+
+
+void Render(sf::RenderWindow& window)
+{	
 	//Render the player
 	player->Render(window);
 
 	//Render the targets
 	for (const auto t : targets) {
 		window.draw(*t);
+	}
+
+	//Render the modifiers
+	for (const auto m : modifiers) {
+		window.draw(*m);
 	}
 }
 
@@ -124,15 +196,26 @@ void Update(sf::RenderWindow& window)
 	}
 
 	//Update targets
-	for (auto& s : targets) {
-		s->Update(dt);
+	for (auto& t : targets) {
+		t->Update(dt);
 
 		//Remove targets when they reach the bottom of the screen
-		if (s->getPosition().y > gameHeight) {
-			cout << s->idNum;
+		if (t->getPosition().y > gameHeight) {
+			targetExists -= 1;										//Change how many targets there currently are
 			targets.erase(targets.begin());
 		}
 	};
+
+	//Update modifiers
+	for (auto& m : modifiers) {
+		m->Update(dt);
+
+		//Remove modifiers when they reach the bottom of the screen
+		if (m->getPosition().y > gameHeight) {
+			modifierExists -= 1;									//Change how many modifiers there currently are
+			modifiers.erase(modifiers.begin());
+		}
+	}
 
 	//Update player
 	player->Update(dt);
@@ -157,7 +240,8 @@ int main() {
 		window.clear(sf::Color::White);
 
 		//Spawn Target
-		SpawnTargets();
+		//SpawnTargets();
+		IntelligentSpawning();
 
 		//Update
 		Update(window);
