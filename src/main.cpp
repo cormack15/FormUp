@@ -16,6 +16,7 @@ int randXSpawnPoint;
 int randSpawnTimeframe;
 int randTargetSpriteX;
 int randTargetSpriteY;
+int targetIDCounter;
 
 //Unique pointer for the player
 std::unique_ptr<Player> player;
@@ -32,6 +33,9 @@ sf::Sprite modifierSprite;
 
 void Load()
 {	
+	//Set variables
+	targetIDCounter = 0;
+	
 	//Create player and place on the screen
 	player = std::make_unique<Player>();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
@@ -74,6 +78,8 @@ void SpawnTargets()
 		//Set the target's X and Y ids. This is done by taking the randTargetSprite X and Y and adding 49 to get the correct value in ASCII, which the then stored as a char
 		placedTarget->idColour = randTargetSpriteX + 49;
 		placedTarget->idShape = randTargetSpriteY + 49;
+		targetIDCounter += 1;															//Increment targetIDCounter
+		placedTarget->idNum = targetIDCounter;											//Set the targetIDCounter
 
 		targets.push_back(placedTarget);												//Push target stack
 
@@ -121,7 +127,9 @@ void Update(sf::RenderWindow& window)
 	for (auto& s : targets) {
 		s->Update(dt);
 
+		//Remove targets when they reach the bottom of the screen
 		if (s->getPosition().y > gameHeight) {
+			cout << s->idNum;
 			targets.erase(targets.begin());
 		}
 	};

@@ -18,6 +18,7 @@ public:
 	static float speed;
 	char idColour;
 	char idShape;
+	int idNum;										//Unique identifier for targets
 	Target();
 	~Target() {};
 	void Update(const float &dt);
@@ -30,6 +31,7 @@ public:
 	static float speed;
 	char idColour;
 	char idShape;
+	int idNum;										//Unique identifier for modifiers
 	Modifier();
 	~Modifier() {};
 	void Update(const float &dt);
