@@ -103,8 +103,8 @@ void IntelligentSpawning()
 	//Define clock
 	static sf::Clock clock;
 
-	int modifierThreshold = 5;			//Determines how many modifiers there should be on screen at once
-	int targetThreshold = 5;			//Determines how many targets there should be on screen at once
+	int modifierThreshold = 2;			//Determines how many modifiers there should be on screen at once
+	int targetThreshold = 2;			//Determines how many targets there should be on screen at once
 
 	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {						//Check if it's time to spawn something
 		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
