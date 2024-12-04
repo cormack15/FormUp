@@ -1,47 +1,68 @@
 #include "player.h"
+#include "shape.h"
+#include "game.h"
 
 using namespace std;
-using namespace sf;
 
-void Player::Update(double dt)
+
+Player::Player() : Shape(sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(50, 50)))
+{
+	setTexture(spritesheet);
+}
+
+void Player::Update(const float& dt)
 {
 
+	Shape::Update(dt);
+
 	//Move in four directions based on keys
-	Vector2f movement(0.0f, 0.0f);
+
+	const float playerSpeed = 400.f;
 
 	// Move Up
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		movement.y -= _speed * dt;
+		//movement.y -= _speed * dt;
+		move(0.f, -playerSpeed * dt);
 	}
 	//Move Down
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		movement.y += _speed * dt;
+		//movement.y += _speed * dt;
+		move(0.f, playerSpeed * dt);
 	}
 	//Move Left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		movement.x -= _speed * dt;
+		//movement.x -= _speed * dt;
+		move(-playerSpeed * dt, 0.f);
 	}
 	//Move Right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		movement.x += _speed * dt;
+		//movement.x += _speed * dt;
+		move(playerSpeed * dt, 0.f);
 	}
 
-	move(movement);
-
-	Entity::Update(dt);
-}
-
-Player::Player() : _speed(200.0f), Entity(make_unique<CircleShape>(25.f))
-{
-	_shape->setFillColor(Color::Black);
-	_shape->setOrigin(sf::Vector2f(25.f, 25.f));
-}
-
-void Player::Render(sf::RenderWindow& window) const
-{
-	window.draw(*_shape);
+	// Check for boundaries
+	// Left boundary: if the player's position goes beyond the left edge (x < 0)
+	if (getPosition().x < 0.f)
+	{
+		move(sf::Vector2f(-getPosition().x, 0.0f));
+	}
+	// Right boundary: if the player's position goes beyond the right edge (x > gameWidth - shape width) 
+	if (getPosition().x > gameWidth - 50.f)
+	{
+		move(sf::Vector2f(gameWidth - 50.f - getPosition().x, 0.f));
+	}
+	// Upper boundary: if the player's position goes beyond the top edge (y < 0)
+	if (getPosition().y < 0.f)
+	{
+		move(sf::Vector2f(0.f, -getPosition().y));
+	}
+	// Lower boundary: if the player's position goes beyond the bottom edge (y > gameHeight - shape height)
+	if (getPosition().y > gameHeight - 50.f)
+	{
+		move(sf::Vector2f(0.f, gameHeight - 50.f - getPosition().y));
+	}
 }

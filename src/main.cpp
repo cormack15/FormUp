@@ -4,7 +4,6 @@
 #include <chrono>
 #include <thread>
 #include "player.h"
-#include "entity.h"
 #include "shape.h"
 #include "game.h"
 
@@ -21,8 +20,8 @@ int targetExists;				//Stores how many targets currently exist
 int modifierExists;				//Stores how many modifiers currently exist
 char spawnerFlag;				//Stores a flag to direct the spawner
 
-//Unique pointer for the player
-std::unique_ptr<Player> player;
+//Pointer for the player
+Player* player;
 
 //Pointer for targets
 std::vector<Target*> targets;
@@ -34,16 +33,39 @@ sf::Texture modifierSpritesheet;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 
+//Tracking the score
+int score = 0;
+//Tracking the lives
+int lives = 3;
+
+//Fonts
+sf::Font font;
+sf::Text scoreText;
+sf::Text livesText;
+
+void UpdateScoreText()
+{
+	//Set the score text to display the current scores
+	scoreText.setString(std::to_string(score));
+	//Position the score text at the top of the screen
+	scoreText.setPosition((gameWidth * 0.8f) - (scoreText.getLocalBounds().width * 0.5f), 10.f);
+}
+
+void UpdateLivesText()
+{
+	livesText.setString("Lives: " + to_string(lives));
+	livesText.setPosition((gameWidth * 0.2f) - (livesText.getLocalBounds().width * 0.5f), 10.f);
+}
 
 void Load()
-{	
+{
 	//Set variables
 	targetIDCounter = 0;
-	
+
 	//Create player and place on the screen
-	player = std::make_unique<Player>();
+	player = new Player();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
-	
+
 	//Error handling for loading textures
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
@@ -63,6 +85,28 @@ void Load()
 	//OLD, KEPT FOR A REMINDER: Create a target
 	//Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
 	//targets.push_back(tar);
+
+	// Load font-face from res dir
+	font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
+
+	// Set text element to use font
+	scoreText.setFont(font);
+	// set the character size to 24 pixels
+	scoreText.setCharacterSize(24);
+	// Set font color
+	scoreText.setFillColor(sf::Color::Black);
+	//Update the text to reflect initial scores
+	UpdateScoreText();
+
+	// Set text element to use font
+	livesText.setFont(font);
+	// set the character size to 24 pixels
+	livesText.setCharacterSize(24);
+	// Set font color
+	livesText.setFillColor(sf::Color::Black);
+	//Update the text to reflect initial scores
+	UpdateLivesText();
+
 }
 
 void SpawnTargets()
@@ -146,13 +190,60 @@ void IntelligentSpawning()
 
 }
 
-
+//Take the modifier sprite and return the target sprite
+IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
+{
+	//Circles
+	if (modifierSpriteRect == sf::IntRect(0, 0, 70, 70))			//Modifier: Red Circle
+		return sf::IntRect(0, 0, 50, 50);							//Target: Red Circle
+	else if (modifierSpriteRect == sf::IntRect(70, 0, 70, 70))		//Modifier: Orange Circle
+		return sf::IntRect(50, 0, 50, 50);							//Target: Orange Circle
+	else if (modifierSpriteRect == sf::IntRect(140, 0, 70, 70))		//Modifier: Yellow Circle
+		return sf::IntRect(100, 0, 50, 50);							//Target: Yellow Circle
+	else if (modifierSpriteRect == sf::IntRect(210, 0, 70, 70))		//Modifier: Green Circle
+		return sf::IntRect(150, 0, 50, 50);							//Target: Green Circle
+	else if (modifierSpriteRect == sf::IntRect(280, 0, 70, 70))		//Modifier: Blue Circle
+		return sf::IntRect(200, 0, 50, 50);							//Target: Green Circle
+	//Squares
+	else if (modifierSpriteRect == sf::IntRect(0, 70, 70, 70))		//Modifier: Red Square
+		return sf::IntRect(0, 50, 50, 50);							//Target: Red Square
+	else if (modifierSpriteRect == sf::IntRect(70, 70, 70, 70))		//Modifier: Orange Square
+		return sf::IntRect(50, 50, 50, 50);							//Target: Orange Square
+	else if (modifierSpriteRect == sf::IntRect(140, 70, 70, 70))	//Modifier: Yellow Square
+		return sf::IntRect(100, 50, 50, 50);						//Target: Yellow Square
+	else if (modifierSpriteRect == sf::IntRect(210, 70, 70, 70))	//Modifier: Green Square
+		return sf::IntRect(150, 50, 50, 50);						//Target: Green Square
+	else if (modifierSpriteRect == sf::IntRect(280, 70, 70, 70))	//Modifier: Blue Square
+		return sf::IntRect(200, 50, 50, 50);						//Target: Green Square
+	//Triangles
+	else if (modifierSpriteRect == sf::IntRect(0, 140, 70, 70))		//Modifier: Red Triangle
+		return sf::IntRect(0, 100, 50, 50);							//Target: Red Triangle
+	else if (modifierSpriteRect == sf::IntRect(70, 140, 70, 70))	//Modifier: Orange Triangle
+		return sf::IntRect(50, 100, 50, 50);						//Target: Orange Triangle
+	else if (modifierSpriteRect == sf::IntRect(140, 140, 70, 70))	//Modifier: Yellow Triangle
+		return sf::IntRect(100, 100, 50, 50);						//Target: Yellow Triangle
+	else if (modifierSpriteRect == sf::IntRect(210, 140, 70, 70))	//Modifier: Green Triangle
+		return sf::IntRect(150, 100, 50, 50);						//Target: Green Triangle
+	else if (modifierSpriteRect == sf::IntRect(280, 140, 70, 70))	//Modifier: Blue Triangle
+		return sf::IntRect(200, 100, 50, 50);						//Target: Green Triangle
+	//Octagons
+	else if (modifierSpriteRect == sf::IntRect(0, 210, 70, 70))		//Modifier: Red Octagon
+		return sf::IntRect(0, 150, 50, 50);							//Target: Red Octagon
+	else if (modifierSpriteRect == sf::IntRect(70, 210, 70, 70))	//Modifier: Orange Octagon
+		return sf::IntRect(50, 150, 50, 50);						//Target: Orange Octagon
+	else if (modifierSpriteRect == sf::IntRect(140, 210, 70, 70))	//Modifier: Yellow Octagon
+		return sf::IntRect(100, 150, 50, 50);						//Target: Yellow Octagon
+	else if (modifierSpriteRect == sf::IntRect(210, 210, 70, 70))	//Modifier: Green Octagon
+		return sf::IntRect(150, 150, 50, 50);						//Target: Green Octagon
+	else if (modifierSpriteRect == sf::IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
+		return sf::IntRect(200, 150, 50, 50);						//Target: Green Octagon
+}
 
 
 void Render(sf::RenderWindow& window)
-{	
+{
 	//Render the player
-	player->Render(window);
+	window.draw(*player);
 
 	//Render the targets
 	for (const auto t : targets) {
@@ -163,6 +254,9 @@ void Render(sf::RenderWindow& window)
 	for (const auto m : modifiers) {
 		window.draw(*m);
 	}
+
+	window.draw(scoreText);
+	window.draw(livesText);
 }
 
 void Update(sf::RenderWindow& window)
@@ -171,16 +265,16 @@ void Update(sf::RenderWindow& window)
 	static sf::Clock clock;
 	float dt = clock.restart().asSeconds();
 
-	// Process events
+	//Process events
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
-		// Close the window when the close event is triggered
+		//Close the window when the close event is triggered
 		if (event.type == sf::Event::Closed) {
 			window.close();
 		}
 
-		// Close window on pressing Escape
+		//Close window on pressing Escape
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 			window.close();
 		}
@@ -211,6 +305,41 @@ void Update(sf::RenderWindow& window)
 	//Update player
 	player->Update(dt);
 
+	//Check for collisions with targets
+	for (int i = 0; i < targets.size(); i++)
+	{
+		if (player->getGlobalBounds().intersects(targets[i]->getGlobalBounds()))
+		{
+			//Check if the player's sprite is in the same row as the target's sprite
+			if (player->getTextureRect().top == targets[i]->getTextureRect().top)
+			{
+				score += 10; //Increment the score
+				UpdateScoreText(); //Update the score display
+			}
+			else
+			{
+				lives -= 1;	 //Remove a life
+				UpdateLivesText();	//Update the lives display
+			}
+
+			targets.erase(targets.begin() + i);
+			targetExists--;
+			i--;
+		}
+	}
+
+	//Check for collisions with modifiers
+	for (int i = 0; i < modifiers.size(); i++)
+	{
+		if (player->getGlobalBounds().intersects(modifiers[i]->getGlobalBounds()))
+		{
+			player->setTextureRect(GetCorrespondingTargetSprite(modifiers[i]->getTextureRect()));
+			modifiers.erase(modifiers.begin() + i);
+			modifierExists--;
+			i--;
+		}
+	}
+
 }
 
 int main() {
@@ -220,7 +349,7 @@ int main() {
 
 	//Seed random with time
 	srand(time(0));
-	
+
 	//Load
 	Load();
 
@@ -243,5 +372,22 @@ int main() {
 		//Display the rendered frame
 		window.display();
 	}
+
+	//Memory for the player
+	delete player;
+	player = nullptr;
+
+	//Memory for the targets
+	for (auto t : targets)
+	{
+		delete t;
+	}
+
+	//Memory for the modifiers
+	for (auto m : modifiers)
+	{
+		delete m;
+	}
+
 	return 0;
 }

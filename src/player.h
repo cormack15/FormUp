@@ -1,13 +1,9 @@
 #pragma once
-#include "entity.h"
+#include "shape.h"
 
-class Player : public Entity
+class Player : public Shape
 {
-private:
-	float _speed;
-
 public:
-	void Update(double dt) override;
 	Player();
-	void Render(sf::RenderWindow& window) const override;
+	void Update(const float& dt) override;
 };
