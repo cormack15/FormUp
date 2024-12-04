@@ -382,12 +382,14 @@ int main() {
 	{
 		delete t;
 	}
+	targets.clear();
 
 	//Memory for the modifiers
 	for (auto m : modifiers)
 	{
 		delete m;
 	}
+	modifiers.clear();
 
 	return 0;
 }
