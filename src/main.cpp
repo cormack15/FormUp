@@ -194,49 +194,49 @@ void IntelligentSpawning()
 IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
 {
 	//Circles
-	if (modifierSpriteRect == sf::IntRect(0, 0, 70, 70))			//Modifier: Red Circle
-		return sf::IntRect(0, 0, 50, 50);							//Target: Red Circle
-	else if (modifierSpriteRect == sf::IntRect(70, 0, 70, 70))		//Modifier: Orange Circle
-		return sf::IntRect(50, 0, 50, 50);							//Target: Orange Circle
-	else if (modifierSpriteRect == sf::IntRect(140, 0, 70, 70))		//Modifier: Yellow Circle
-		return sf::IntRect(100, 0, 50, 50);							//Target: Yellow Circle
-	else if (modifierSpriteRect == sf::IntRect(210, 0, 70, 70))		//Modifier: Green Circle
-		return sf::IntRect(150, 0, 50, 50);							//Target: Green Circle
-	else if (modifierSpriteRect == sf::IntRect(280, 0, 70, 70))		//Modifier: Blue Circle
-		return sf::IntRect(200, 0, 50, 50);							//Target: Green Circle
+	if (modifierSpriteRect == IntRect(0, 0, 70, 70))			//Modifier: Red Circle
+		return IntRect(0, 0, 50, 50);							//Target: Red Circle
+	else if (modifierSpriteRect == IntRect(70, 0, 70, 70))		//Modifier: Orange Circle
+		return IntRect(50, 0, 50, 50);							//Target: Orange Circle
+	else if (modifierSpriteRect == IntRect(140, 0, 70, 70))		//Modifier: Yellow Circle
+		return IntRect(100, 0, 50, 50);							//Target: Yellow Circle
+	else if (modifierSpriteRect == IntRect(210, 0, 70, 70))		//Modifier: Green Circle
+		return IntRect(150, 0, 50, 50);							//Target: Green Circle
+	else if (modifierSpriteRect == IntRect(280, 0, 70, 70))		//Modifier: Blue Circle
+		return IntRect(200, 0, 50, 50);							//Target: Green Circle
 	//Squares
-	else if (modifierSpriteRect == sf::IntRect(0, 70, 70, 70))		//Modifier: Red Square
-		return sf::IntRect(0, 50, 50, 50);							//Target: Red Square
-	else if (modifierSpriteRect == sf::IntRect(70, 70, 70, 70))		//Modifier: Orange Square
-		return sf::IntRect(50, 50, 50, 50);							//Target: Orange Square
-	else if (modifierSpriteRect == sf::IntRect(140, 70, 70, 70))	//Modifier: Yellow Square
-		return sf::IntRect(100, 50, 50, 50);						//Target: Yellow Square
-	else if (modifierSpriteRect == sf::IntRect(210, 70, 70, 70))	//Modifier: Green Square
-		return sf::IntRect(150, 50, 50, 50);						//Target: Green Square
-	else if (modifierSpriteRect == sf::IntRect(280, 70, 70, 70))	//Modifier: Blue Square
-		return sf::IntRect(200, 50, 50, 50);						//Target: Green Square
+	else if (modifierSpriteRect == IntRect(0, 70, 70, 70))		//Modifier: Red Square
+		return IntRect(0, 50, 50, 50);							//Target: Red Square
+	else if (modifierSpriteRect == IntRect(70, 70, 70, 70))		//Modifier: Orange Square
+		return IntRect(50, 50, 50, 50);							//Target: Orange Square
+	else if (modifierSpriteRect == IntRect(140, 70, 70, 70))	//Modifier: Yellow Square
+		return IntRect(100, 50, 50, 50);						//Target: Yellow Square
+	else if (modifierSpriteRect == IntRect(210, 70, 70, 70))	//Modifier: Green Square
+		return IntRect(150, 50, 50, 50);						//Target: Green Square
+	else if (modifierSpriteRect == IntRect(280, 70, 70, 70))	//Modifier: Blue Square
+		return IntRect(200, 50, 50, 50);						//Target: Green Square
 	//Triangles
-	else if (modifierSpriteRect == sf::IntRect(0, 140, 70, 70))		//Modifier: Red Triangle
-		return sf::IntRect(0, 100, 50, 50);							//Target: Red Triangle
-	else if (modifierSpriteRect == sf::IntRect(70, 140, 70, 70))	//Modifier: Orange Triangle
-		return sf::IntRect(50, 100, 50, 50);						//Target: Orange Triangle
-	else if (modifierSpriteRect == sf::IntRect(140, 140, 70, 70))	//Modifier: Yellow Triangle
-		return sf::IntRect(100, 100, 50, 50);						//Target: Yellow Triangle
-	else if (modifierSpriteRect == sf::IntRect(210, 140, 70, 70))	//Modifier: Green Triangle
-		return sf::IntRect(150, 100, 50, 50);						//Target: Green Triangle
-	else if (modifierSpriteRect == sf::IntRect(280, 140, 70, 70))	//Modifier: Blue Triangle
-		return sf::IntRect(200, 100, 50, 50);						//Target: Green Triangle
+	else if (modifierSpriteRect == IntRect(0, 140, 70, 70))		//Modifier: Red Triangle
+		return IntRect(0, 100, 50, 50);							//Target: Red Triangle
+	else if (modifierSpriteRect == IntRect(70, 140, 70, 70))	//Modifier: Orange Triangle
+		return IntRect(50, 100, 50, 50);						//Target: Orange Triangle
+	else if (modifierSpriteRect == IntRect(140, 140, 70, 70))	//Modifier: Yellow Triangle
+		return IntRect(100, 100, 50, 50);						//Target: Yellow Triangle
+	else if (modifierSpriteRect == IntRect(210, 140, 70, 70))	//Modifier: Green Triangle
+		return IntRect(150, 100, 50, 50);						//Target: Green Triangle
+	else if (modifierSpriteRect == IntRect(280, 140, 70, 70))	//Modifier: Blue Triangle
+		return IntRect(200, 100, 50, 50);						//Target: Green Triangle
 	//Octagons
-	else if (modifierSpriteRect == sf::IntRect(0, 210, 70, 70))		//Modifier: Red Octagon
-		return sf::IntRect(0, 150, 50, 50);							//Target: Red Octagon
-	else if (modifierSpriteRect == sf::IntRect(70, 210, 70, 70))	//Modifier: Orange Octagon
-		return sf::IntRect(50, 150, 50, 50);						//Target: Orange Octagon
-	else if (modifierSpriteRect == sf::IntRect(140, 210, 70, 70))	//Modifier: Yellow Octagon
-		return sf::IntRect(100, 150, 50, 50);						//Target: Yellow Octagon
-	else if (modifierSpriteRect == sf::IntRect(210, 210, 70, 70))	//Modifier: Green Octagon
-		return sf::IntRect(150, 150, 50, 50);						//Target: Green Octagon
-	else if (modifierSpriteRect == sf::IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
-		return sf::IntRect(200, 150, 50, 50);						//Target: Green Octagon
+	else if (modifierSpriteRect == IntRect(0, 210, 70, 70))		//Modifier: Red Octagon
+		return IntRect(0, 150, 50, 50);							//Target: Red Octagon
+	else if (modifierSpriteRect == IntRect(70, 210, 70, 70))	//Modifier: Orange Octagon
+		return IntRect(50, 150, 50, 50);						//Target: Orange Octagon
+	else if (modifierSpriteRect == IntRect(140, 210, 70, 70))	//Modifier: Yellow Octagon
+		return IntRect(100, 150, 50, 50);						//Target: Yellow Octagon
+	else if (modifierSpriteRect == IntRect(210, 210, 70, 70))	//Modifier: Green Octagon
+		return IntRect(150, 150, 50, 50);						//Target: Green Octagon
+	else if (modifierSpriteRect == IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
+		return IntRect(200, 150, 50, 50);						//Target: Green Octagon
 }
 
 
@@ -333,6 +333,7 @@ void Update(sf::RenderWindow& window)
 	{
 		if (player->getGlobalBounds().intersects(modifiers[i]->getGlobalBounds()))
 		{
+			//Set the player sprite to the target sprite corresponding to the modifier sprite
 			player->setTextureRect(GetCorrespondingTargetSprite(modifiers[i]->getTextureRect()));
 			modifiers.erase(modifiers.begin() + i);
 			modifierExists--;
