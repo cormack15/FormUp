@@ -172,32 +172,48 @@ void IntelligentSpawning()
 			std::pair<int, int> justSpawnedMod = std::make_pair(randModifierSpriteX, randModifierSpriteY);
 			toSpawnTargets.push_back(justSpawnedMod);
 
-			for (auto& ta : toSpawnTargets) {
-				cout << ta.first << "|" << ta.second;
-			}
-
 			randModifierSpriteX = (rand() % 5);													//Choose a random sprite X
 			randModifierSpriteY = (rand() % 4);													//Choose a random sprite Y
 			modifierExists += 1;																//Change how many modifiers there currently are
 		}
-		else if (targetExists < targetThreshold) { 
-			randTargetSprite = (rand() % toSpawnTargets.size());
+		else if (targetExists < targetThreshold) {
+			int wildcard = (rand() % 2);												//Determine if a completely random target should be spawned
+			cout << wildcard;
 
-			int tempX = toSpawnTargets.at(randTargetSprite).first;
-			int tempY = toSpawnTargets.at(randTargetSprite).second;
-			
-			auto rect = IntRect(tempX * 50, tempY * 50, 50, 50);
-			auto placedTarget = new Target(rect, position);
+			if (wildcard == 0) {
+				randTargetSpriteX = (rand() % 5);
+				randTargetSpriteY = (rand() % 4);
 
-			placedTarget->idColour = tempX + 49;
-			placedTarget->idColour = tempY + 49;
-			targetIDCounter += 1;
-			placedTarget->idNum = targetIDCounter;
-			targets.push_back(placedTarget);
+				auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);
+				auto placedTarget = new Target(rect, position);
 
-			targetExists += 1;
+				placedTarget->idColour = randTargetSpriteX + 49;
+				placedTarget->idShape = randTargetSpriteY + 49;
+				targetIDCounter += 1;
+				placedTarget->idNum = targetIDCounter;
 
-			toSpawnTargets.erase(toSpawnTargets.begin()+randTargetSprite);
+				targets.push_back(placedTarget);
+				targetExists += 1;
+			}
+			else if (toSpawnTargets.size() >= 0) {
+				randTargetSprite = (rand() % toSpawnTargets.size());
+
+				int tempX = toSpawnTargets.at(randTargetSprite).first;
+				int tempY = toSpawnTargets.at(randTargetSprite).second;
+
+				auto rect = IntRect(tempX * 50, tempY * 50, 50, 50);
+				auto placedTarget = new Target(rect, position);
+
+				placedTarget->idColour = tempX + 49;
+				placedTarget->idColour = tempY + 49;
+				targetIDCounter += 1;
+				placedTarget->idNum = targetIDCounter;
+				targets.push_back(placedTarget);
+
+				targetExists += 1;
+
+				toSpawnTargets.erase(toSpawnTargets.begin() + randTargetSprite);
+			}
 		}
 
 		/*else if (targetExists < targetThreshold) {										//Check if there aren't enough targets
@@ -218,8 +234,6 @@ void IntelligentSpawning()
 		clock.restart();																		//Restart the clock
 		randSpawnTimeframe = (rand() % 3) + 1;													//Choose a random time until next target spawns
 	}
-
-
 }
 
 //Take the modifier sprite and return the target sprite
