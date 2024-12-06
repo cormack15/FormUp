@@ -129,14 +129,22 @@ void IntelligentSpawning()
 
 		tarOrMod = (rand() % 10) + 1;													//Choose to spawn either a target or a modifier
 		if (toSpawnTargets.size() <= 1) {												//If there is a low amount of targets set to spawn, weight towards spawning a modifier
-			cout << " tst=" << toSpawnTargets.size();
 			tarOrMod -= 2;
 		}
+		else if (toSpawnTargets.size() >= 5) {
+			toSpawnTargets.erase(toSpawnTargets.end() - 1);
+		}
 
-		//if (modifierExists < modifierThreshold) {										//Check if there aren't enough modifiers
-		if (toSpawnTargets.size() == 0 || tarOrMod < 5) {
+		if (toSpawnTargets.size() == 0 || tarOrMod < 5) {								//Spawn a modifier if there is no targets to spawn or if chosen randomly
 			auto rect = IntRect(randModifierSpriteX * 70, randModifierSpriteY * 70, 70, 70);	//Define the sprite for the modifier
 			auto placedModifier = new Modifier(rect, position);									//Create the modifier
+
+			if (score >= 0 && score <= 100) {													//Adjust modifier's speed by score
+				placedModifier->speed += (score/10) * 2;
+			}
+			else {
+				placedModifier->speed += (score/10);
+			}
 
 			placedModifier->idColour = randModifierSpriteX + 49;								//Set the modifier's X, Y, and num ids
 			placedModifier->idShape = randModifierSpriteY + 49;
@@ -162,6 +170,13 @@ void IntelligentSpawning()
 				auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);
 				auto placedTarget = new Target(rect, position);
 
+				if (score >= 0 && score <= 100) {													//Adjust target's speed by score
+					placedTarget->speed += (score / 10) * 2;
+				}
+				else {
+					placedTarget->speed += (score / 10);
+				}
+
 				placedTarget->idColour = randTargetSpriteX + 49;
 				placedTarget->idShape = randTargetSpriteY + 49;
 				targetIDCounter += 1;
@@ -179,6 +194,13 @@ void IntelligentSpawning()
 				auto rect = IntRect(tempX * 50, tempY * 50, 50, 50);
 				auto placedTarget = new Target(rect, position);
 
+				if (score >= 0 && score <= 100) {													//Adjust target's speed by score
+					placedTarget->speed += (score / 10) * 2;
+				}
+				else {
+					placedTarget->speed += (score / 10);
+				}
+
 				placedTarget->idColour = tempX + 49;
 				placedTarget->idColour = tempY + 49;
 				targetIDCounter += 1;
@@ -190,8 +212,6 @@ void IntelligentSpawning()
 				toSpawnTargets.erase(toSpawnTargets.begin() + randTargetSprite);
 			}
 		}
-
-		//cout << " tm=" << tarOrMod;
 
 		clock.restart();																		//Restart the clock
 		randSpawnTimeframe = (rand() % 2) + 1;													//Choose a random time until next target spawns
