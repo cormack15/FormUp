@@ -136,7 +136,7 @@ void IntelligentSpawning()
 		if (toSpawnTargets.size() <= 1) {												//If there is a low amount of targets set to spawn, weight towards spawning a modifier
 			tarOrMod -= 2;
 		}
-		else if (toSpawnTargets.size() >= 5) {
+		else if (toSpawnTargets.size() >= 5) {											//If there are too many targets queued up, erase the oldest in the queue
 			toSpawnTargets.erase(toSpawnTargets.end() - 1);
 		}
 
@@ -144,11 +144,11 @@ void IntelligentSpawning()
 			auto rect = IntRect(randModifierSpriteX * 70, randModifierSpriteY * 70, 70, 70);	//Define the sprite for the modifier
 			auto placedModifier = new Modifier(rect, position);									//Create the modifier
 
-			if (score >= 0 && score <= 100) {													//Adjust modifier's speed by score
-				placedModifier->speed += (score/10) * 2;
+			if (score >= 0 && score <= 100) {													//Adjust modifier's speed by score. Speed adjustment increases after 100 score
+				placedModifier->speed += (score/10);
 			}
 			else {
-				placedModifier->speed += (score/10);
+				placedModifier->speed += (score/10) * 2;
 			}
 
 			placedModifier->idColour = randModifierSpriteX + 49;								//Set the modifier's X, Y, and num ids

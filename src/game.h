@@ -6,3 +6,4 @@ constexpr uint16_t gameHeight = 900;
 
 extern sf::Texture spritesheet;
 extern sf::Texture modifierSpritesheet;
+extern sf::Texture background;
