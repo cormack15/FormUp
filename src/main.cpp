@@ -1,8 +1,3 @@
-//TODO: Change IntelligentSpawning to pseudo-randomly pick between a modifier or target instead of always spawning modifiers until the limit is reached
-
-
-
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
@@ -119,39 +114,6 @@ void Load()
 
 }
 
-void SpawnTargets()
-{
-	//Define clock
-	static sf::Clock clock;
-
-	//Spawn targets at random locations at random intervals
-	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {
-		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
-
-		auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);	//Define the sprite for the target
-		Vector2f position = Vector2f(randXSpawnPoint, 0);								//Define the X,Y position for the target to spawn at
-
-		auto placedTarget = new Target(rect, position);									//Create the target
-
-		//Set the target's X and Y ids. This is done by taking the randTargetSprite X and Y and adding 49 to get the correct value in ASCII, which the then stored as a char
-		placedTarget->idColour = randTargetSpriteX + 49;
-		placedTarget->idShape = randTargetSpriteY + 49;
-		targetIDCounter += 1;															//Increment targetIDCounter
-		placedTarget->idNum = targetIDCounter;											//Set the targetIDCounter
-
-		targets.push_back(placedTarget);												//Push target stack
-
-		clock.restart();																//Restart the clock
-
-		randSpawnTimeframe = (rand() % 3) + 1;											//Choose a random time until next target spawns
-		randTargetSpriteX = (rand() % 5);												//Choose a random sprite X
-		randTargetSpriteY = (rand() % 4);												//Choose a random sprite Y
-
-		targetExists += 1;																//Change how many targets there currently are
-	}
-}
-
-
 void IntelligentSpawning()
 {
 	//Define clock
@@ -167,6 +129,7 @@ void IntelligentSpawning()
 
 		tarOrMod = (rand() % 10) + 1;													//Choose to spawn either a target or a modifier
 		if (toSpawnTargets.size() <= 1) {												//If there is a low amount of targets set to spawn, weight towards spawning a modifier
+			cout << " tst=" << toSpawnTargets.size();
 			tarOrMod -= 2;
 		}
 
@@ -229,7 +192,7 @@ void IntelligentSpawning()
 			}
 		}
 
-		cout << " tm=" << tarOrMod;
+		//cout << " tm=" << tarOrMod;
 
 		/*else if (targetExists < targetThreshold) {										//Check if there aren't enough targets
 			auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);		//Define the sprite for the target
