@@ -32,8 +32,10 @@ std::vector<Modifier*> modifiers;
 //Defining textures
 sf::Texture spritesheet;
 sf::Texture modifierSpritesheet;
+sf::Texture background;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
+sf::Sprite backgroundSprite;
 
 //Tracking the score
 int score = 0;
@@ -78,6 +80,9 @@ void Load()
 	if (!modifierSpritesheet.loadFromFile("res/modifierspritesheet.png")) {
 		std::cerr << "Failed to load modifier spritesheet" << std::endl;
 	}
+	if (!background.loadFromFile("res/bg.png")) {
+		std::cerr << "Failed to load background" << std::endl;
+	}
 
 	//Load in sprite for a target
 	targetSprite.setTexture(spritesheet);
@@ -87,9 +92,9 @@ void Load()
 	modifierSprite.setTexture(modifierSpritesheet);
 	modifierSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(70, 70)));
 
-	//OLD, KEPT FOR A REMINDER: Create a target
-	//Target* tar = new Target(sf::IntRect(Vector2i(150, 50), Vector2i(50, 50)), { 200,200 });
-	//targets.push_back(tar);
+	//Load in background
+	backgroundSprite.setTexture(background);
+	backgroundSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
 
 	// Load font-face from res dir
 	font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
@@ -159,7 +164,6 @@ void IntelligentSpawning()
 			randModifierSpriteY = (rand() % 4);													//Choose a random sprite Y
 			modifierExists += 1;																//Change how many modifiers there currently are
 		}
-		//else if (targetExists < targetThreshold) {									//Check if there aren't enough targets
 		else if (tarOrMod >= 5) {
 			int wildcard = (rand() % 5);												//Determine if a completely random target should be spawned
 
@@ -270,6 +274,9 @@ IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
 
 void Render(sf::RenderWindow& window)
 {
+	//Render the background
+	window.draw(backgroundSprite);
+	
 	//Render the player
 	window.draw(*player);
 
