@@ -134,7 +134,7 @@ void IntelligentSpawning()
 		}
 
 		//if (modifierExists < modifierThreshold) {										//Check if there aren't enough modifiers
-		if (tarOrMod < 5) {
+		if (toSpawnTargets.size() == 0 || tarOrMod < 5) {
 			auto rect = IntRect(randModifierSpriteX * 70, randModifierSpriteY * 70, 70, 70);	//Define the sprite for the modifier
 			auto placedModifier = new Modifier(rect, position);									//Create the modifier
 
@@ -154,7 +154,6 @@ void IntelligentSpawning()
 		//else if (targetExists < targetThreshold) {									//Check if there aren't enough targets
 		else if (tarOrMod >= 5) {
 			int wildcard = (rand() % 5);												//Determine if a completely random target should be spawned
-			cout << wildcard;
 
 			if (wildcard == 0) {
 				randTargetSpriteX = (rand() % 5);
@@ -194,23 +193,8 @@ void IntelligentSpawning()
 
 		//cout << " tm=" << tarOrMod;
 
-		/*else if (targetExists < targetThreshold) {										//Check if there aren't enough targets
-			auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);		//Define the sprite for the target
-			auto placedTarget = new Target(rect, position);										//Create the target
-
-			placedTarget->idColour = randTargetSpriteX + 49;									//Set the modifier's X, Y, and num ids
-			placedTarget->idShape = randTargetSpriteY + 49;
-			targetIDCounter += 1;																//Increment targetIDCounter
-			placedTarget->idNum = targetIDCounter;
-
-			targets.push_back(placedTarget);													//Push target stack
-			randTargetSpriteX = (rand() % 5);													//Choose a random sprite X
-			randTargetSpriteY = (rand() % 4);													//Choose a random sprite Y
-			targetExists += 1;																	//Change how many targets there currently are
-		}*/
-
 		clock.restart();																		//Restart the clock
-		randSpawnTimeframe = (rand() % 3) + 1;													//Choose a random time until next target spawns
+		randSpawnTimeframe = (rand() % 2) + 1;													//Choose a random time until next target spawns
 	}
 }
 
