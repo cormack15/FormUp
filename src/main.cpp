@@ -1,3 +1,8 @@
+//TODO: Change IntelligentSpawning to pseudo-randomly pick between a modifier or target instead of always spawning modifiers until the limit is reached
+
+
+
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
@@ -154,12 +159,19 @@ void IntelligentSpawning()
 
 	int modifierThreshold = 2;			//Determines how many modifiers there should be on screen at once
 	int targetThreshold = 2;			//Determines how many targets there should be on screen at once
+	int tarOrMod;						//Determines whether a target or a modifier should be spawned
 
 	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {						//Check if it's time to spawn something
 		randXSpawnPoint = (rand() % 401) + 50;											//Create random spawn location along X axis
 		Vector2f position = Vector2f(randXSpawnPoint, 0);								//Define the X,Y position to spawn at
 
-		if (modifierExists < modifierThreshold) {										//Check if there aren't enough modifiers
+		tarOrMod = (rand() % 10) + 1;													//Choose to spawn either a target or a modifier
+		if (toSpawnTargets.size() <= 1) {												//If there is a low amount of targets set to spawn, weight towards spawning a modifier
+			tarOrMod -= 2;
+		}
+
+		//if (modifierExists < modifierThreshold) {										//Check if there aren't enough modifiers
+		if (tarOrMod < 5) {
 			auto rect = IntRect(randModifierSpriteX * 70, randModifierSpriteY * 70, 70, 70);	//Define the sprite for the modifier
 			auto placedModifier = new Modifier(rect, position);									//Create the modifier
 
@@ -176,8 +188,9 @@ void IntelligentSpawning()
 			randModifierSpriteY = (rand() % 4);													//Choose a random sprite Y
 			modifierExists += 1;																//Change how many modifiers there currently are
 		}
-		else if (targetExists < targetThreshold) {
-			int wildcard = (rand() % 2);												//Determine if a completely random target should be spawned
+		//else if (targetExists < targetThreshold) {									//Check if there aren't enough targets
+		else if (tarOrMod >= 5) {
+			int wildcard = (rand() % 5);												//Determine if a completely random target should be spawned
 			cout << wildcard;
 
 			if (wildcard == 0) {
@@ -215,6 +228,8 @@ void IntelligentSpawning()
 				toSpawnTargets.erase(toSpawnTargets.begin() + randTargetSprite);
 			}
 		}
+
+		cout << " tm=" << tarOrMod;
 
 		/*else if (targetExists < targetThreshold) {										//Check if there aren't enough targets
 			auto rect = IntRect(randTargetSpriteX * 50, randTargetSpriteY * 50, 50, 50);		//Define the sprite for the target
