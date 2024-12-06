@@ -124,8 +124,6 @@ void IntelligentSpawning()
 	//Define clock
 	static sf::Clock clock;
 
-	int modifierThreshold = 2;			//Determines how many modifiers there should be on screen at once
-	int targetThreshold = 2;			//Determines how many targets there should be on screen at once
 	int tarOrMod;						//Determines whether a target or a modifier should be spawned
 
 	if (clock.getElapsedTime().asSeconds() > randSpawnTimeframe) {						//Check if it's time to spawn something
@@ -164,10 +162,10 @@ void IntelligentSpawning()
 			randModifierSpriteY = (rand() % 4);													//Choose a random sprite Y
 			modifierExists += 1;																//Change how many modifiers there currently are
 		}
-		else if (tarOrMod >= 5) {
-			int wildcard = (rand() % 5);												//Determine if a completely random target should be spawned
+		else if (tarOrMod >= 5) {														//Spawn a target if chosen randomly
+			int wildcard = (rand() % 10);												//Determine if a completely random target should be spawned
 
-			if (wildcard == 0) {
+			if (wildcard == 0) {														//If 0 is picked, spawn and set a random target
 				randTargetSpriteX = (rand() % 5);
 				randTargetSpriteY = (rand() % 4);
 
@@ -175,10 +173,10 @@ void IntelligentSpawning()
 				auto placedTarget = new Target(rect, position);
 
 				if (score >= 0 && score <= 100) {													//Adjust target's speed by score
-					placedTarget->speed += (score / 10) * 2;
+					placedTarget->speed += (score/10);
 				}
 				else {
-					placedTarget->speed += (score / 10);
+					placedTarget->speed += (score/10) * 2;
 				}
 
 				placedTarget->idColour = randTargetSpriteX + 49;
@@ -189,7 +187,7 @@ void IntelligentSpawning()
 				targets.push_back(placedTarget);
 				targetExists += 1;
 			}
-			else if (toSpawnTargets.size() >= 0) {
+			else if (toSpawnTargets.size() >= 0) {										//If not a random one, if there is a target to be spawned, spawn it
 				randTargetSprite = (rand() % toSpawnTargets.size());
 
 				int tempX = toSpawnTargets.at(randTargetSprite).first;
@@ -198,7 +196,7 @@ void IntelligentSpawning()
 				auto rect = IntRect(tempX * 50, tempY * 50, 50, 50);
 				auto placedTarget = new Target(rect, position);
 
-				if (score >= 0 && score <= 100) {													//Adjust target's speed by score
+				if (score >= 0 && score <= 100) {												//Adjust target's speed by score
 					placedTarget->speed += (score / 10) * 2;
 				}
 				else {
@@ -210,15 +208,14 @@ void IntelligentSpawning()
 				targetIDCounter += 1;
 				placedTarget->idNum = targetIDCounter;
 				targets.push_back(placedTarget);
-
 				targetExists += 1;
 
-				toSpawnTargets.erase(toSpawnTargets.begin() + randTargetSprite);
+				toSpawnTargets.erase(toSpawnTargets.begin() + randTargetSprite);				//Remove the target from the list
 			}
 		}
 
 		clock.restart();																		//Restart the clock
-		randSpawnTimeframe = (rand() % 2) + 1;													//Choose a random time until next target spawns
+		randSpawnTimeframe = ((rand() % 2) + 1);												//Choose a random time until next target spawns
 	}
 }
 
