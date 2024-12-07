@@ -1,4 +1,7 @@
+//point-smooth-beep.mp3		-> RibhavAgrawal [user_id:39286533] on pixabay.com
+
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include <iostream>
 #include <stdio.h>
 #include <chrono>
@@ -18,9 +21,9 @@ int randTargetSpriteY;	int randModifierSpriteY;		//Stores the random Y coord for
 int targetIDCounter;	int modifierIDCounter;			//Stores the ID counter for targets and modifiers
 int targetExists;				//Stores how many targets currently exist
 int modifierExists;				//Stores how many modifiers currently exist
-char spawnerFlag;				//Stores a flag to direct the spawner
-
 int randTargetSprite;
+
+char spawnerFlag;				//Stores a flag to direct the spawner
 
 //Pointer for the player
 Player* player;
@@ -36,6 +39,9 @@ sf::Texture background;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
+
+//Defining sounds
+sf::SoundBuffer modifierSF;
 
 //Tracking the score
 int score = 0;
