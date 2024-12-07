@@ -10,3 +10,5 @@ extern sf::Texture modifierSpritesheet;
 extern sf::Texture background;
 
 extern sf::SoundBuffer modifierSFXBuffer;
+extern sf::SoundBuffer targetSFXBuffer;
+extern sf::SoundBuffer damageSFXBuffer;

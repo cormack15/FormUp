@@ -1,4 +1,6 @@
-//point-smooth-beep.mp3		-> RibhavAgrawal [user_id:39286533] on pixabay.com
+//point-smooth-beep.mp3				-> RibhavAgrawal [user_id:39286533] on pixabay.com
+//8-bit-video-game-points.mp3		-> Make_More_Sound [user_id:35032787] on pixabay.com
+//classic-game-action-negative.mp3	-> floraphonic [user_id:38928062] on pixabay.com
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -42,7 +44,11 @@ sf::Sprite backgroundSprite;
 
 //Defining sounds
 sf::SoundBuffer modifierSFXBuffer;
+sf::SoundBuffer targetSFXBuffer;
+sf::SoundBuffer damageSFXBuffer;
 sf::Sound modifierSFX;
+sf::Sound targetSFX;
+sf::Sound damageSFX;
 
 //Tracking the score
 int score = 0;
@@ -93,6 +99,12 @@ void Load()
 	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
 	}
+	if (!targetSFXBuffer.loadFromFile("res/8-bit-video-game-points.mp3")) {
+		std::cerr << "Failed to load target SFX file" << std::endl;
+	}
+	if (!damageSFXBuffer.loadFromFile("res/classic-game-action-negative.mp3")) {
+		std::cerr << "Failed to load damage SFX file" << std::endl;
+	}
 
 	//Load in sprite for a target
 	targetSprite.setTexture(spritesheet);
@@ -108,7 +120,11 @@ void Load()
 
 	//Load in audio
 	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
+	targetSFXBuffer.loadFromFile("res/8-bit-video-game-points.mp3");
+	damageSFXBuffer.loadFromFile("res/classic-game-action-negative.mp3");
 	modifierSFX.setBuffer(modifierSFXBuffer);
+	targetSFX.setBuffer(targetSFXBuffer);
+	damageSFX.setBuffer(damageSFXBuffer);
 
 	// Load font-face from res dir
 	font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
@@ -359,12 +375,14 @@ void Update(sf::RenderWindow& window)
 			//Check if the player's sprite is in the same row as the target's sprite
 			if (player->getTextureRect().top == targets[i]->getTextureRect().top)
 			{
-				score += 10; //Increment the score
-				UpdateScoreText(); //Update the score display
+				targetSFX.play();	//Play target collection SFX
+				score += 10;		//Increment the score
+				UpdateScoreText();	//Update the score display
 			}
 			else
 			{
-				lives -= 1;	 //Remove a life
+				damageSFX.play();	//Play damage SFX
+				lives -= 1;			//Remove a life
 				UpdateLivesText();	//Update the lives display
 			}
 
