@@ -40,8 +40,9 @@ sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
 
-//
-sf::SoundBuffer modifierSFX;
+//Defining sounds
+sf::SoundBuffer modifierSFXBuffer;
+sf::Sound modifierSFX;
 
 //Tracking the score
 int score = 0;
@@ -89,7 +90,7 @@ void Load()
 	if (!background.loadFromFile("res/bg.png")) {
 		std::cerr << "Failed to load background" << std::endl;
 	}
-	if (!modifierSFX.loadFromFile("res/point-smooth-beep.mp3")) {
+	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
 	}
 
@@ -104,6 +105,10 @@ void Load()
 	//Load in background
 	backgroundSprite.setTexture(background);
 	backgroundSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
+
+	//Load in audio
+	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
+	modifierSFX.setBuffer(modifierSFXBuffer);
 
 	// Load font-face from res dir
 	font.loadFromFile("res/fonts/RobotoMono-Regular.ttf");
@@ -374,6 +379,8 @@ void Update(sf::RenderWindow& window)
 	{
 		if (player->getGlobalBounds().intersects(modifiers[i]->getGlobalBounds()))
 		{
+			modifierSFX.play();			//Play modifier collection SFX
+			
 			//Set the player sprite to the target sprite corresponding to the modifier sprite
 			player->setTextureRect(GetCorrespondingTargetSprite(modifiers[i]->getTextureRect()));
 			modifiers.erase(modifiers.begin() + i);

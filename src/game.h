@@ -9,4 +9,4 @@ extern sf::Texture spritesheet;
 extern sf::Texture modifierSpritesheet;
 extern sf::Texture background;
 
-extern sf::SoundBuffer modifierSFX;
+extern sf::SoundBuffer modifierSFXBuffer;
