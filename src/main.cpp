@@ -86,6 +86,9 @@ void Load()
 	player = new Player();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 
+	player->idColour = 49;
+	player->idShape = 49;
+
 	//Error handling for loading textures and sounds
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
