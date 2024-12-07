@@ -38,9 +38,11 @@ std::vector<Modifier*> modifiers;
 sf::Texture spritesheet;
 sf::Texture modifierSpritesheet;
 sf::Texture background;
+sf::Texture tutorial;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
+sf::Sprite tutorialSprite;
 
 //Defining sounds
 sf::SoundBuffer modifierSFXBuffer;
@@ -86,6 +88,7 @@ void Load()
 	player = new Player();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 
+	//Set player's initial colour and shape ids
 	player->idColour = 49;
 	player->idShape = 49;
 
@@ -98,6 +101,9 @@ void Load()
 	}
 	if (!background.loadFromFile("res/bg.png")) {
 		std::cerr << "Failed to load background" << std::endl;
+	}
+	if (!tutorial.loadFromFile("res/tutorial.png")) {
+		std::cerr << "Failed to load tutorial image" << std::endl;
 	}
 	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
@@ -120,6 +126,10 @@ void Load()
 	//Load in background
 	backgroundSprite.setTexture(background);
 	backgroundSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
+
+	//Load in tutorial
+	tutorialSprite.setTexture(tutorial);
+	tutorialSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
 
 	//Load in audio
 	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
@@ -322,6 +332,11 @@ void Render(sf::RenderWindow& window)
 
 	window.draw(scoreText);
 	window.draw(livesText);
+
+	//Render the tutorial
+	if (score == 0) {
+		window.draw(tutorialSprite);
+	}
 }
 
 void Update(sf::RenderWindow& window)
