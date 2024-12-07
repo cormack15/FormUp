@@ -419,6 +419,9 @@ void Update(sf::RenderWindow& window)
 			player->idColour = modifiers[i]->idColour;		//Set the player's colour and shape id to the modifier collected
 			player->idShape = modifiers[i]->idShape;
 
+			score += 2;
+			UpdateScoreText();
+
 			//Set the player sprite to the target sprite corresponding to the modifier sprite
 			player->setTextureRect(GetCorrespondingTargetSprite(modifiers[i]->getTextureRect()));
 			modifiers.erase(modifiers.begin() + i);
