@@ -20,7 +20,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 add_executable(FORMUP_PROJECT  ${SOURCES})
 target_include_directories(FORMUP_PROJECT  PRIVATE ${SFML_INCS})
-target_link_libraries(FORMUP_PROJECT  sfml-graphics)
+target_link_libraries(FORMUP_PROJECT  sfml-graphics sfml-audio)
 
 # Set the working directory for Visual Studio's debugger to the output directory
 set_target_properties(FORMUP_PROJECT 

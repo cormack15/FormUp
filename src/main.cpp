@@ -1,7 +1,7 @@
 //point-smooth-beep.mp3		-> RibhavAgrawal [user_id:39286533] on pixabay.com
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <stdio.h>
 #include <chrono>
@@ -40,8 +40,8 @@ sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
 
-//Defining sounds
-sf::SoundBuffer modifierSF;
+//
+sf::SoundBuffer modifierSFX;
 
 //Tracking the score
 int score = 0;
@@ -79,7 +79,7 @@ void Load()
 	player = new Player();
 	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));
 
-	//Error handling for loading textures
+	//Error handling for loading textures and sounds
 	if (!spritesheet.loadFromFile("res/spritesheet.png")) {
 		std::cerr << "Failed to load spritesheet" << std::endl;
 	}
@@ -88,6 +88,9 @@ void Load()
 	}
 	if (!background.loadFromFile("res/bg.png")) {
 		std::cerr << "Failed to load background" << std::endl;
+	}
+	if (!modifierSFX.loadFromFile("res/point-smooth-beep.mp3")) {
+		std::cerr << "Failed to load modifier SFX file" << std::endl;
 	}
 
 	//Load in sprite for a target
