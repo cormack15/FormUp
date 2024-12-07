@@ -234,7 +234,7 @@ void IntelligentSpawning()
 				}
 
 				placedTarget->idColour = tempX + 49;
-				placedTarget->idColour = tempY + 49;
+				placedTarget->idShape = tempY + 49;
 				targetIDCounter += 1;
 				placedTarget->idNum = targetIDCounter;
 				targets.push_back(placedTarget);
@@ -369,11 +369,10 @@ void Update(sf::RenderWindow& window)
 
 	//Check for collisions with targets
 	for (int i = 0; i < targets.size(); i++)
-	{
+	{	
 		if (player->getGlobalBounds().intersects(targets[i]->getGlobalBounds()))
 		{
-			//Check if the player's sprite is in the same row as the target's sprite
-			if (player->getTextureRect().top == targets[i]->getTextureRect().top)
+			if (player->idColour == targets[i]->idColour && player->idShape == targets[i]->idShape)		//Check if the player's colour and shape matches the target's
 			{
 				targetSFX.play();	//Play target collection SFX
 				score += 10;		//Increment the score
@@ -397,8 +396,11 @@ void Update(sf::RenderWindow& window)
 	{
 		if (player->getGlobalBounds().intersects(modifiers[i]->getGlobalBounds()))
 		{
-			modifierSFX.play();			//Play modifier collection SFX
+			modifierSFX.play();								//Play modifier collection SFX
 			
+			player->idColour = modifiers[i]->idColour;		//Set the player's colour and shape id to the modifier collected
+			player->idShape = modifiers[i]->idShape;
+
 			//Set the player sprite to the target sprite corresponding to the modifier sprite
 			player->setTextureRect(GetCorrespondingTargetSprite(modifiers[i]->getTextureRect()));
 			modifiers.erase(modifiers.begin() + i);
