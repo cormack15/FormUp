@@ -27,7 +27,7 @@ int randTargetSprite;
 
 char spawnerFlag;				//Stores a flag to direct the spawner
 
-bool isGamePaused;				//Stores if the game is paused.
+bool isGamePaused = false;		//Stores if the game is paused.
 
 //Pointer for the player
 Player* player;
@@ -79,6 +79,55 @@ void UpdateLivesText()
 {
 	livesText.setString("Lives: " + to_string(lives));
 	livesText.setPosition((gameWidth * 0.2f) - (livesText.getLocalBounds().width * 0.5f), 10.f);
+}
+
+//Take the modifier sprite and return the target sprite
+IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
+{
+	//Circles
+	if (modifierSpriteRect == IntRect(0, 0, 70, 70))			//Modifier: Red Circle
+		return IntRect(0, 0, 50, 50);							//Target: Red Circle
+	else if (modifierSpriteRect == IntRect(70, 0, 70, 70))		//Modifier: Orange Circle
+		return IntRect(50, 0, 50, 50);							//Target: Orange Circle
+	else if (modifierSpriteRect == IntRect(140, 0, 70, 70))		//Modifier: Yellow Circle
+		return IntRect(100, 0, 50, 50);							//Target: Yellow Circle
+	else if (modifierSpriteRect == IntRect(210, 0, 70, 70))		//Modifier: Green Circle
+		return IntRect(150, 0, 50, 50);							//Target: Green Circle
+	else if (modifierSpriteRect == IntRect(280, 0, 70, 70))		//Modifier: Blue Circle
+		return IntRect(200, 0, 50, 50);							//Target: Green Circle
+	//Squares
+	else if (modifierSpriteRect == IntRect(0, 70, 70, 70))		//Modifier: Red Square
+		return IntRect(0, 50, 50, 50);							//Target: Red Square
+	else if (modifierSpriteRect == IntRect(70, 70, 70, 70))		//Modifier: Orange Square
+		return IntRect(50, 50, 50, 50);							//Target: Orange Square
+	else if (modifierSpriteRect == IntRect(140, 70, 70, 70))	//Modifier: Yellow Square
+		return IntRect(100, 50, 50, 50);						//Target: Yellow Square
+	else if (modifierSpriteRect == IntRect(210, 70, 70, 70))	//Modifier: Green Square
+		return IntRect(150, 50, 50, 50);						//Target: Green Square
+	else if (modifierSpriteRect == IntRect(280, 70, 70, 70))	//Modifier: Blue Square
+		return IntRect(200, 50, 50, 50);						//Target: Green Square
+	//Triangles
+	else if (modifierSpriteRect == IntRect(0, 140, 70, 70))		//Modifier: Red Triangle
+		return IntRect(0, 100, 50, 50);							//Target: Red Triangle
+	else if (modifierSpriteRect == IntRect(70, 140, 70, 70))	//Modifier: Orange Triangle
+		return IntRect(50, 100, 50, 50);						//Target: Orange Triangle
+	else if (modifierSpriteRect == IntRect(140, 140, 70, 70))	//Modifier: Yellow Triangle
+		return IntRect(100, 100, 50, 50);						//Target: Yellow Triangle
+	else if (modifierSpriteRect == IntRect(210, 140, 70, 70))	//Modifier: Green Triangle
+		return IntRect(150, 100, 50, 50);						//Target: Green Triangle
+	else if (modifierSpriteRect == IntRect(280, 140, 70, 70))	//Modifier: Blue Triangle
+		return IntRect(200, 100, 50, 50);						//Target: Green Triangle
+	//Octagons
+	else if (modifierSpriteRect == IntRect(0, 210, 70, 70))		//Modifier: Red Octagon
+		return IntRect(0, 150, 50, 50);							//Target: Red Octagon
+	else if (modifierSpriteRect == IntRect(70, 210, 70, 70))	//Modifier: Orange Octagon
+		return IntRect(50, 150, 50, 50);						//Target: Orange Octagon
+	else if (modifierSpriteRect == IntRect(140, 210, 70, 70))	//Modifier: Yellow Octagon
+		return IntRect(100, 150, 50, 50);						//Target: Yellow Octagon
+	else if (modifierSpriteRect == IntRect(210, 210, 70, 70))	//Modifier: Green Octagon
+		return IntRect(150, 150, 50, 50);						//Target: Green Octagon
+	else if (modifierSpriteRect == IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
+		return IntRect(200, 150, 50, 50);						//Target: Green Octagon
 }
 
 void Load()
@@ -162,6 +211,29 @@ void Load()
 	//Update the text to reflect initial scores
 	UpdateLivesText();
 
+}
+
+void Events(sf::RenderWindow& window) {
+	//Process events
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		//Close the window when the close event is triggered
+		if (event.type == sf::Event::Closed) {
+			window.close();
+		}
+
+		//Close window on pressing Escape
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			window.close();
+		}
+	}
+
+	if ((sf::Mouse::getPosition(window).x >= 0 && sf::Mouse::getPosition(window).x <= 50) && (sf::Mouse::getPosition(window).y >= 0 && sf::Mouse::getPosition(window).y <= 50)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			isGamePaused = true;
+		}
+	}
 }
 
 void IntelligentSpawning()
@@ -264,106 +336,6 @@ void IntelligentSpawning()
 	}
 }
 
-//Take the modifier sprite and return the target sprite
-IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
-{
-	//Circles
-	if (modifierSpriteRect == IntRect(0, 0, 70, 70))			//Modifier: Red Circle
-		return IntRect(0, 0, 50, 50);							//Target: Red Circle
-	else if (modifierSpriteRect == IntRect(70, 0, 70, 70))		//Modifier: Orange Circle
-		return IntRect(50, 0, 50, 50);							//Target: Orange Circle
-	else if (modifierSpriteRect == IntRect(140, 0, 70, 70))		//Modifier: Yellow Circle
-		return IntRect(100, 0, 50, 50);							//Target: Yellow Circle
-	else if (modifierSpriteRect == IntRect(210, 0, 70, 70))		//Modifier: Green Circle
-		return IntRect(150, 0, 50, 50);							//Target: Green Circle
-	else if (modifierSpriteRect == IntRect(280, 0, 70, 70))		//Modifier: Blue Circle
-		return IntRect(200, 0, 50, 50);							//Target: Green Circle
-	//Squares
-	else if (modifierSpriteRect == IntRect(0, 70, 70, 70))		//Modifier: Red Square
-		return IntRect(0, 50, 50, 50);							//Target: Red Square
-	else if (modifierSpriteRect == IntRect(70, 70, 70, 70))		//Modifier: Orange Square
-		return IntRect(50, 50, 50, 50);							//Target: Orange Square
-	else if (modifierSpriteRect == IntRect(140, 70, 70, 70))	//Modifier: Yellow Square
-		return IntRect(100, 50, 50, 50);						//Target: Yellow Square
-	else if (modifierSpriteRect == IntRect(210, 70, 70, 70))	//Modifier: Green Square
-		return IntRect(150, 50, 50, 50);						//Target: Green Square
-	else if (modifierSpriteRect == IntRect(280, 70, 70, 70))	//Modifier: Blue Square
-		return IntRect(200, 50, 50, 50);						//Target: Green Square
-	//Triangles
-	else if (modifierSpriteRect == IntRect(0, 140, 70, 70))		//Modifier: Red Triangle
-		return IntRect(0, 100, 50, 50);							//Target: Red Triangle
-	else if (modifierSpriteRect == IntRect(70, 140, 70, 70))	//Modifier: Orange Triangle
-		return IntRect(50, 100, 50, 50);						//Target: Orange Triangle
-	else if (modifierSpriteRect == IntRect(140, 140, 70, 70))	//Modifier: Yellow Triangle
-		return IntRect(100, 100, 50, 50);						//Target: Yellow Triangle
-	else if (modifierSpriteRect == IntRect(210, 140, 70, 70))	//Modifier: Green Triangle
-		return IntRect(150, 100, 50, 50);						//Target: Green Triangle
-	else if (modifierSpriteRect == IntRect(280, 140, 70, 70))	//Modifier: Blue Triangle
-		return IntRect(200, 100, 50, 50);						//Target: Green Triangle
-	//Octagons
-	else if (modifierSpriteRect == IntRect(0, 210, 70, 70))		//Modifier: Red Octagon
-		return IntRect(0, 150, 50, 50);							//Target: Red Octagon
-	else if (modifierSpriteRect == IntRect(70, 210, 70, 70))	//Modifier: Orange Octagon
-		return IntRect(50, 150, 50, 50);						//Target: Orange Octagon
-	else if (modifierSpriteRect == IntRect(140, 210, 70, 70))	//Modifier: Yellow Octagon
-		return IntRect(100, 150, 50, 50);						//Target: Yellow Octagon
-	else if (modifierSpriteRect == IntRect(210, 210, 70, 70))	//Modifier: Green Octagon
-		return IntRect(150, 150, 50, 50);						//Target: Green Octagon
-	else if (modifierSpriteRect == IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
-		return IntRect(200, 150, 50, 50);						//Target: Green Octagon
-}
-
-
-void Render(sf::RenderWindow& window)
-{
-	//Render the background
-	window.draw(backgroundSprite);
-	
-	//Render the player
-	window.draw(*player);
-
-	//Render the targets
-	for (const auto t : targets) {
-		window.draw(*t);
-	}
-
-	//Render the modifiers
-	for (const auto m : modifiers) {
-		window.draw(*m);
-	}
-
-	window.draw(scoreText);
-	window.draw(livesText);
-
-	//Render the tutorial
-	if (score == 0) {
-		window.draw(tutorialSprite);
-	}
-}
-
-void Events(sf::RenderWindow& window) {
-	//Process events
-	sf::Event event;
-	while (window.pollEvent(event))
-	{
-		//Close the window when the close event is triggered
-		if (event.type == sf::Event::Closed) {
-			window.close();
-		}
-
-		//Close window on pressing Escape
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-			window.close();
-		}
-	}
-
-	while ((sf::Mouse::getPosition(window).x >= 0 && sf::Mouse::getPosition(window).x <= 50) && (sf::Mouse::getPosition(window).y >= 0 && sf::Mouse::getPosition(window).y <= 50)) {
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			cout << "oh god why";
-		}
-	}
-}
-
 void Update(sf::RenderWindow& window)
 {
 	//Reset clock, recalculate deltatime
@@ -441,6 +413,33 @@ void Update(sf::RenderWindow& window)
 	}
 }
 
+void Render(sf::RenderWindow& window)
+{
+	//Render the background
+	window.draw(backgroundSprite);
+
+	//Render the player
+	window.draw(*player);
+
+	//Render the targets
+	for (const auto t : targets) {
+		window.draw(*t);
+	}
+
+	//Render the modifiers
+	for (const auto m : modifiers) {
+		window.draw(*m);
+	}
+
+	window.draw(scoreText);
+	window.draw(livesText);
+
+	//Render the tutorial
+	if (score == 0) {
+		window.draw(tutorialSprite);
+	}
+}
+
 int main() {
 	//Create window & set frame rate
 	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "FORM UP");
@@ -458,15 +457,16 @@ int main() {
 		//Clear the window
 		window.clear(sf::Color::White);
 
-		//Spawn Target
-		//SpawnTargets();
-		IntelligentSpawning();
-
 		//Process events
 		Events(window);
 
-		//Update
-		Update(window);
+		if (isGamePaused == false) {
+			//Spawn Target
+			IntelligentSpawning();
+
+			//Update
+			Update(window);
+		}
 
 		//Draw game elements
 		Render(window);
