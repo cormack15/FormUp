@@ -25,9 +25,12 @@ int targetExists;				//Stores how many targets currently exist
 int modifierExists;				//Stores how many modifiers currently exist
 int randTargetSprite;
 
+float prevDT;					//Stores the dt before the game was paused for Update()
+
 char spawnerFlag;				//Stores a flag to direct the spawner
 
 bool isGamePaused = false;		//Stores if the game is paused.
+bool justResumed = false;		//Stores if the game was just resumed
 
 //Pointer for the player
 Player* player;
@@ -258,7 +261,7 @@ void Events(sf::RenderWindow& window) {
 	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 309 && sf::Mouse::getPosition(window).y <= 386) && isGamePaused) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			isGamePaused = false;
-
+			justResumed = true;
 		}
 	}
 
@@ -272,8 +275,7 @@ void Events(sf::RenderWindow& window) {
 
 void IntelligentSpawning()
 {
-	//Define clock
-	static sf::Clock clock;
+	static sf::Clock clock;				//Define clock
 
 	int tarOrMod;						//Determines whether a target or a modifier should be spawned
 
@@ -375,6 +377,12 @@ void Update(sf::RenderWindow& window)
 	//Reset clock, recalculate deltatime
 	static sf::Clock clock;
 	float dt = clock.restart().asSeconds();
+	
+	if (justResumed) {							//If the game was just resumed, reset dt to what it was before the game was paused
+		dt = prevDT;
+	}
+
+	prevDT = dt;								//Store what dt is to reset back to it after resuming
 
 	//Update targets
 	for (auto& t : targets) {
