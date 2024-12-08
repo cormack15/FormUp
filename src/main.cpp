@@ -31,6 +31,7 @@ char spawnerFlag;				//Stores a flag to direct the spawner
 
 bool isGamePaused = false;		//Stores if the game is paused
 bool isGameover = false;		//Stores if the game is over
+bool isGameOptions = false;		//Stores if the options menu is open
 bool justResumed = false;		//Stores if the game was just resumed
 
 //Pointer for the player
@@ -138,6 +139,10 @@ IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
 		return IntRect(150, 150, 50, 50);						//Target: Green Octagon
 	else if (modifierSpriteRect == IntRect(280, 210, 70, 70))	//Modifier: Blue Octagon
 		return IntRect(200, 150, 50, 50);						//Target: Green Octagon
+}
+
+void Options(sf::RenderWindow& window) {
+
 }
 
 void Restart(sf::RenderWindow& window) {
@@ -542,6 +547,9 @@ void Render(sf::RenderWindow& window)
 	}
 	else if (isGameover == true) {
 		window.draw(gameoverMenuSprite);
+	}
+	else if (isGameOptions == true) {
+		Options(window);
 	}
 	else {
 		window.draw(pauseMenuSprite);
