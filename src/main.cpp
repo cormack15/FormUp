@@ -247,9 +247,25 @@ void Events(sf::RenderWindow& window) {
 		}
 	}
 
-	if ((sf::Mouse::getPosition(window).x >= 0 && sf::Mouse::getPosition(window).x <= 50) && (sf::Mouse::getPosition(window).y >= 0 && sf::Mouse::getPosition(window).y <= 50)) {
+	//Pause button
+	if ((sf::Mouse::getPosition(window).x >= 0 && sf::Mouse::getPosition(window).x <= 50) && (sf::Mouse::getPosition(window).y >= 0 && sf::Mouse::getPosition(window).y <= 50) && !isGamePaused) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			isGamePaused = true;
+		}
+	}
+
+	//Resume button
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 309 && sf::Mouse::getPosition(window).y <= 386) && isGamePaused) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			isGamePaused = false;
+
+		}
+	}
+
+	//Quit button
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 556 && sf::Mouse::getPosition(window).y <= 633) && isGamePaused) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			window.close();
 		}
 	}
 }
@@ -461,6 +477,9 @@ void Render(sf::RenderWindow& window)
 	//Render the pause button
 	if (isGamePaused == false) {
 		window.draw(pauseButtonSprite);
+	}
+	else {
+		window.draw(pauseMenuSprite);
 	}
 	
 }
