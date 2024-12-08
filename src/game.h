@@ -11,6 +11,7 @@ extern sf::Texture background;
 extern sf::Texture tutorial;
 extern sf::Texture pauseButton;
 extern sf::Texture pauseMenu;
+extern sf::Texture gameoverMenu;
 
 extern sf::SoundBuffer modifierSFXBuffer;
 extern sf::SoundBuffer targetSFXBuffer;

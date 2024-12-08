@@ -29,7 +29,8 @@ float prevDT;					//Stores the dt before the game was paused for Update()
 
 char spawnerFlag;				//Stores a flag to direct the spawner
 
-bool isGamePaused = false;		//Stores if the game is paused.
+bool isGamePaused = false;		//Stores if the game is paused
+bool isGameover = false;		//Stores if the game is over
 bool justResumed = false;		//Stores if the game was just resumed
 
 //Pointer for the player
@@ -46,12 +47,14 @@ sf::Texture background;
 sf::Texture tutorial;
 sf::Texture pauseButton;
 sf::Texture pauseMenu;
+sf::Texture gameoverMenu;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
 sf::Sprite tutorialSprite;
 sf::Sprite pauseButtonSprite;
 sf::Sprite pauseMenuSprite;
+sf::Sprite gameoverMenuSprite;
 
 //Defining sounds
 sf::SoundBuffer modifierSFXBuffer;
@@ -137,6 +140,30 @@ IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
 		return IntRect(200, 150, 50, 50);						//Target: Green Octagon
 }
 
+void Restart(sf::RenderWindow& window) {
+	score = 0;																			//Reset score
+	lives = 3;																			//Reset lives
+	UpdateScoreText();
+	UpdateLivesText();
+
+	while (!modifiers.empty()) {														//Clear modifiers list
+		modifiers.erase(modifiers.begin());
+	}
+
+	while (!targets.empty()) {															//Clear targets list
+		targets.erase(targets.begin());
+	}
+
+	player->idColour = 49;																//Reset player idColour
+	player->idShape = 49;																//Reset player idShape
+	player->setTextureRect(IntRect(0, 0, 50, 50));										//Reset player sprite
+	player->setPosition(sf::Vector2f(gameWidth / 2.f, gameHeight / 1.2f));				//Reset player position
+
+
+	isGamePaused = false;
+	isGameover = false;
+}
+
 void Load()
 {
 	//Set variables
@@ -167,7 +194,10 @@ void Load()
 		std::cerr << "Failed to load pause button image" << std::endl;
 	}
 	if (!pauseMenu.loadFromFile("res/pausemenu.png")) {
-		std::cerr << "Failed to load pause button image" << std::endl;
+		std::cerr << "Failed to load pause menu image" << std::endl;
+	}
+	if (!gameoverMenu.loadFromFile("res/gameover.png")) {
+		std::cerr << "Failed to load gameover image" << std::endl;
 	}
 	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
@@ -202,6 +232,10 @@ void Load()
 	//Load in pause menu
 	pauseMenuSprite.setTexture(pauseMenu);
 	pauseMenuSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
+
+	//Load in gameover menu
+	gameoverMenuSprite.setTexture(gameoverMenu);
+	gameoverMenuSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
 
 	//Load in audio
 	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
@@ -269,6 +303,26 @@ void Events(sf::RenderWindow& window) {
 	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 556 && sf::Mouse::getPosition(window).y <= 633) && isGamePaused) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			window.close();
+		}
+	}
+
+	//Gameover check
+	if (lives <= 0) {
+		isGamePaused = true;
+		isGameover = true;
+
+		//Quit button
+		if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 556 && sf::Mouse::getPosition(window).y <= 633)) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				window.close();				//Close the game
+			}
+		}
+
+		//Restart button
+		if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 309 && sf::Mouse::getPosition(window).y <= 386)) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				Restart(window);			//Restart the game
+			}
 		}
 	}
 }
@@ -485,6 +539,9 @@ void Render(sf::RenderWindow& window)
 	//Render the pause button
 	if (isGamePaused == false) {
 		window.draw(pauseButtonSprite);
+	}
+	else if (isGameover == true) {
+		window.draw(gameoverMenuSprite);
 	}
 	else {
 		window.draw(pauseMenuSprite);
