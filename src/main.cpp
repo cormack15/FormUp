@@ -41,10 +41,14 @@ sf::Texture spritesheet;
 sf::Texture modifierSpritesheet;
 sf::Texture background;
 sf::Texture tutorial;
+sf::Texture pauseButton;
+sf::Texture pauseMenu;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
 sf::Sprite tutorialSprite;
+sf::Sprite pauseButtonSprite;
+sf::Sprite pauseMenuSprite;
 
 //Defining sounds
 sf::SoundBuffer modifierSFXBuffer;
@@ -156,6 +160,12 @@ void Load()
 	if (!tutorial.loadFromFile("res/tutorial.png")) {
 		std::cerr << "Failed to load tutorial image" << std::endl;
 	}
+	if (!pauseButton.loadFromFile("res/pausebutton.png")) {
+		std::cerr << "Failed to load pause button image" << std::endl;
+	}
+	if (!pauseMenu.loadFromFile("res/pausemenu.png")) {
+		std::cerr << "Failed to load pause button image" << std::endl;
+	}
 	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
 	}
@@ -181,6 +191,14 @@ void Load()
 	//Load in tutorial
 	tutorialSprite.setTexture(tutorial);
 	tutorialSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
+
+	//Load in pause button
+	pauseButtonSprite.setTexture(pauseButton);
+	pauseButtonSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(50, 50)));
+
+	//Load in pause menu
+	pauseMenuSprite.setTexture(pauseMenu);
+	pauseMenuSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
 
 	//Load in audio
 	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
@@ -431,6 +449,7 @@ void Render(sf::RenderWindow& window)
 		window.draw(*m);
 	}
 
+	//Render the score and lives text
 	window.draw(scoreText);
 	window.draw(livesText);
 
@@ -438,6 +457,12 @@ void Render(sf::RenderWindow& window)
 	if (score == 0) {
 		window.draw(tutorialSprite);
 	}
+
+	//Render the pause button
+	if (isGamePaused == false) {
+		window.draw(pauseButtonSprite);
+	}
+	
 }
 
 int main() {

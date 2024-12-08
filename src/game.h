@@ -9,6 +9,8 @@ extern sf::Texture spritesheet;
 extern sf::Texture modifierSpritesheet;
 extern sf::Texture background;
 extern sf::Texture tutorial;
+extern sf::Texture pauseButton;
+extern sf::Texture pauseMenu;
 
 extern sf::SoundBuffer modifierSFXBuffer;
 extern sf::SoundBuffer targetSFXBuffer;
