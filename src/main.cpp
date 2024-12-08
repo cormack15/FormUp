@@ -27,6 +27,8 @@ int randTargetSprite;
 
 char spawnerFlag;				//Stores a flag to direct the spawner
 
+bool isGamePaused;				//Stores if the game is paused.
+
 //Pointer for the player
 Player* player;
 
@@ -339,12 +341,7 @@ void Render(sf::RenderWindow& window)
 	}
 }
 
-void Update(sf::RenderWindow& window)
-{
-	//Reset clock, recalculate deltatime
-	static sf::Clock clock;
-	float dt = clock.restart().asSeconds();
-
+void Events(sf::RenderWindow& window) {
 	//Process events
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -359,6 +356,19 @@ void Update(sf::RenderWindow& window)
 			window.close();
 		}
 	}
+
+	while ((sf::Mouse::getPosition(window).x >= 0 && sf::Mouse::getPosition(window).x <= 50) && (sf::Mouse::getPosition(window).y >= 0 && sf::Mouse::getPosition(window).y <= 50)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			cout << "oh god why";
+		}
+	}
+}
+
+void Update(sf::RenderWindow& window)
+{
+	//Reset clock, recalculate deltatime
+	static sf::Clock clock;
+	float dt = clock.restart().asSeconds();
 
 	//Update targets
 	for (auto& t : targets) {
@@ -429,7 +439,6 @@ void Update(sf::RenderWindow& window)
 			i--;
 		}
 	}
-
 }
 
 int main() {
@@ -452,6 +461,9 @@ int main() {
 		//Spawn Target
 		//SpawnTargets();
 		IntelligentSpawning();
+
+		//Process events
+		Events(window);
 
 		//Update
 		Update(window);
