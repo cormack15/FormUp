@@ -49,6 +49,7 @@ sf::Texture tutorial;
 sf::Texture pauseButton;
 sf::Texture pauseMenu;
 sf::Texture gameoverMenu;
+sf::Texture optionsMenu;
 sf::Sprite targetSprite;
 sf::Sprite modifierSprite;
 sf::Sprite backgroundSprite;
@@ -56,6 +57,7 @@ sf::Sprite tutorialSprite;
 sf::Sprite pauseButtonSprite;
 sf::Sprite pauseMenuSprite;
 sf::Sprite gameoverMenuSprite;
+sf::Sprite optionsMenuSprite;
 
 //Defining sounds
 sf::SoundBuffer modifierSFXBuffer;
@@ -142,7 +144,14 @@ IntRect GetCorrespondingTargetSprite(const IntRect& modifierSpriteRect)
 }
 
 void Options(sf::RenderWindow& window) {
+	window.draw(optionsMenuSprite);				//Render options menu sprite
 
+	//Back button
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 758 && sf::Mouse::getPosition(window).y <= 836)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			isGameOptions = false;
+		}
+	}
 }
 
 void Restart(sf::RenderWindow& window) {
@@ -204,6 +213,9 @@ void Load()
 	if (!gameoverMenu.loadFromFile("res/gameover.png")) {
 		std::cerr << "Failed to load gameover image" << std::endl;
 	}
+	if (!optionsMenu.loadFromFile("res/optionsmenu.png")) {
+		std::cerr << "Failed to load options menu image" << std::endl;
+	}
 	if (!modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3")) {
 		std::cerr << "Failed to load modifier SFX file" << std::endl;
 	}
@@ -242,6 +254,10 @@ void Load()
 	gameoverMenuSprite.setTexture(gameoverMenu);
 	gameoverMenuSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
 
+	//Load in options menu
+	optionsMenuSprite.setTexture(optionsMenu);
+	optionsMenuSprite.setTextureRect(IntRect(Vector2i(0, 0), Vector2i(500, 900)));
+
 	//Load in audio
 	modifierSFXBuffer.loadFromFile("res/point-smooth-beep.mp3");
 	targetSFXBuffer.loadFromFile("res/8-bit-video-game-points.mp3");
@@ -276,8 +292,7 @@ void Load()
 void Events(sf::RenderWindow& window) {
 	//Process events
 	sf::Event event;
-	while (window.pollEvent(event))
-	{
+	while (window.pollEvent(event)) {
 		//Close the window when the close event is triggered
 		if (event.type == sf::Event::Closed) {
 			window.close();
@@ -301,6 +316,14 @@ void Events(sf::RenderWindow& window) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			isGamePaused = false;
 			justResumed = true;
+		}
+	}
+
+	//Options button
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 431 && sf::Mouse::getPosition(window).y <= 508) && isGamePaused) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			isGamePaused = true;
+			isGameOptions = true;
 		}
 	}
 
