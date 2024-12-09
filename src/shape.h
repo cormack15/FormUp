@@ -13,26 +13,26 @@ public:
 
 class Target : public Shape {
 public:
-	Target(sf::IntRect ir, sf::Vector2f pos);
+	Target();
+	Target(sf::IntRect ir, sf::Vector2f pos, const sf::Texture& texture);
 	static bool direction;
 	static float speed;
 	char idColour;
 	char idShape;
-	int idNum;										//Unique identifier for targets
-	Target();
+	int idNum;
 	~Target() {};
-	void Update(const float &dt);
+	void Update(const float &dt) override;
 };
 
 class Modifier : public Shape {
 public:
-	Modifier(sf::IntRect ir, sf::Vector2f pos);
+	Modifier();
+	Modifier(sf::IntRect ir, sf::Vector2f pos, const sf::Texture& texture);
 	static bool direction;
 	static float speed;
 	char idColour;
 	char idShape;
-	int idNum;										//Unique identifier for modifiers
-	Modifier();
+	int idNum;
 	~Modifier() {};
-	void Update(const float &dt);
+	void Update(const float &dt) override;
 };

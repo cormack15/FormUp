@@ -3,56 +3,59 @@
 #include "shape.h"
 #include "game.h"
 
-//Defining shape
+// -------------------
+// Shape Class
+// -------------------
 Shape::Shape() {};
 
-Shape::Shape(sf::IntRect ir) : Sprite() {
-	_sprite = ir;
+Shape::Shape(sf::IntRect ir) : sf::Sprite(), _sprite(ir) {
 	setTextureRect(_sprite);
 };
 
-void Shape::Update(const float& dt) {}
 Shape::~Shape() = default;
 
-//Defining target
-Target::Target() : Shape() {};
+void Shape::Update(const float& dt) {}
 
-Target::Target(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
-	setOrigin(sf::Vector2f(16.f, 16.f));
-	setTexture(spritesheet);
-	setPosition(pos);
-}
+
+// -------------------
+// Target Class
+// -------------------
+Target::Target() : Shape() {};
 
 //Defining target's direction and speed
 bool Target::direction = true;
-float Target::speed = 100;
+float Target::speed = 100.0f;
+
+Target::Target(sf::IntRect ir, sf::Vector2f pos, const sf::Texture& texture) : Shape(ir) {
+	setOrigin(16.f, 16.f);
+	setTexture(texture);
+	setPosition(pos);
+}
 
 //Target update
 void Target::Update(const float& dt) {
 	Shape::Update(dt);
-	
-	//Target movement
-	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
+	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));		//Target movement
 }
 
 
-//Defining modifier
+// -------------------
+// Modifier Class
+// -------------------
 Modifier::Modifier() : Shape() {};
-
-Modifier::Modifier(sf::IntRect ir, sf::Vector2f pos) : Shape(ir) {
-	setOrigin(sf::Vector2f(16.f, 16.f));
-	setTexture(modifierSpritesheet);
-	setPosition(pos);
-}
 
 //Defining modifier's direction and speed
 bool Modifier::direction = true;
 float Modifier::speed = 100;
 
+Modifier::Modifier(sf::IntRect ir, sf::Vector2f pos, const sf::Texture& texture) : Shape(ir) {
+	setOrigin(16.f, 16.f);
+	setTexture(texture);
+	setPosition(pos);
+}
+
 //Modifier update
 void Modifier::Update(const float& dt) {
 	Shape::Update(dt);
-
-	//Modifier movement
-	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));
+	move(sf::Vector2f(0.f, dt * (direction ? 1.0f : -1.0f) * speed));		//Modifier movement
  }
