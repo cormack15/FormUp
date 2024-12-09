@@ -61,6 +61,12 @@ install(DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/" DESTINATION "bin"
 #Main Install target
 install(TARGETS FORMUP_PROJECT DESTINATION "bin" CONFIGURATIONS Release COMPONENT FORMUP_PROJECT_CMPT)
 
+# Install OpenAL32.dll
+install(FILES "${CMAKE_SOURCE_DIR}/lib/sfml/extlibs/bin/x64/openal32.dll"
+        DESTINATION "bin"
+        CONFIGURATIONS Release
+        COMPONENT SYSTEM_CMPT)
+
 
 #Tell CPack about the libs and resources install components
 set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} RESOURCES_CMPT SFML_CMPT SYSTEM_CMPT FORMUP_PROJECT_CMPT)
