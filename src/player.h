@@ -5,6 +5,7 @@
 class Player : public Shape
 {
 public:
+	static bool controlSetup;
 	char idColour;
 	char idShape;
 	Player(const sf::Texture& texture);

@@ -367,7 +367,7 @@ void Game::Events(sf::RenderWindow& window) {
 	}
 
 	//Resume button
-	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 309 && sf::Mouse::getPosition(window).y <= 386) && isGamePaused) {
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 309 && sf::Mouse::getPosition(window).y <= 386) && isGamePaused && !isGameOptions) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			isGamePaused = false;
 			justResumed = true;
@@ -383,7 +383,7 @@ void Game::Events(sf::RenderWindow& window) {
 	}
 
 	//Quit button
-	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 556 && sf::Mouse::getPosition(window).y <= 633) && isGamePaused) {
+	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 556 && sf::Mouse::getPosition(window).y <= 633) && isGamePaused && !isGameOptions) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			window.close();
 		}
@@ -418,6 +418,20 @@ void Game::Options(sf::RenderWindow& window) {
 	if ((sf::Mouse::getPosition(window).x >= 70 && sf::Mouse::getPosition(window).x <= 431) && (sf::Mouse::getPosition(window).y >= 758 && sf::Mouse::getPosition(window).y <= 836)) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			isGameOptions = false;
+		}
+	}
+
+	//WASD button
+	if ((sf::Mouse::getPosition(window).x >= 127 && sf::Mouse::getPosition(window).x <= 373) && (sf::Mouse::getPosition(window).y >= 277 && sf::Mouse::getPosition(window).y <= 344)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			player->controlSetup = false;
+		}
+	}
+
+	//Arrows button
+	if ((sf::Mouse::getPosition(window).x >= 127 && sf::Mouse::getPosition(window).x <= 373) && (sf::Mouse::getPosition(window).y >= 399 && sf::Mouse::getPosition(window).y <= 466)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			player->controlSetup = true;
 		}
 	}
 }

@@ -9,6 +9,8 @@ Player::Player(const sf::Texture& texture) : Shape(sf::IntRect(sf::Vector2i(0, 0
 	setTexture(texture);
 }
 
+bool Player::controlSetup = true;
+
 void Player::Update(const float& dt) {
 
 	Shape::Update(dt);
@@ -17,21 +19,35 @@ void Player::Update(const float& dt) {
 
 	const float playerSpeed = 400.f;
 
-	// Move Up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		move(0.f, -playerSpeed * dt);
+
+	//If true, use arrows. Else use WASD
+	if (controlSetup) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {		//Up
+			move(0.f, -playerSpeed * dt);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {	//Down
+			move(0.f, playerSpeed * dt);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {	//Left
+			move(-playerSpeed * dt, 0.f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {	//Right
+			move(playerSpeed * dt, 0.f);
+		}
 	}
-	//Move Down
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		move(0.f, playerSpeed * dt);
-	}
-	//Move Left
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		move(-playerSpeed * dt, 0.f);
-	}
-	//Move Right
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		move(playerSpeed * dt, 0.f);
+	else {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {	//Up
+			move(0.f, -playerSpeed * dt);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {	//Down
+			move(0.f, playerSpeed * dt);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {	//Left
+			move(-playerSpeed * dt, 0.f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {	//Right
+			move(playerSpeed * dt, 0.f);
+		}
 	}
 
 	// Check for boundaries
